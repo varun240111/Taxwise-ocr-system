@@ -1,4 +1,7 @@
 import UserProfile from "../models/UserProfile.js";
+import TaxCalculation from "../models/TaxCalculation.js";
+import MLSuggestion from "../models/MLSuggestion.js";
+
 
 export const setupProfile = async (req, res) => {
   try {
@@ -95,8 +98,11 @@ export const getProfile = async (req, res) => {
   }
 };
 
+
 export const updateProfile = async (req, res) => {
   try {
+    const userId = req.user.id;
+
     const {
       fullName,
       age,
@@ -106,41 +112,52 @@ export const updateProfile = async (req, res) => {
       lifeEvents,
     } = req.body;
 
-    const yearsToRetirement = 60 - Number(age);
-
-    const profile = await UserProfile.findOneAndUpdate(
-      { userId: req.user.id },
-      {
-        fullName,
-        age,
-        city,
-        cityType,
-        riskAppetite,
-        yearsToRetirement,
-
-        // IMPORTANT
-        lifeEvents: lifeEvents || [],
-      },
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
-
-    res.status(200).json({
-      success: true,
-      message: "Profile updated successfully",
-      profile,
+    const existingProfile = await UserProfile.findOne({
+      userId,
     });
 
+    if (!existingProfile) {
+      return res.status(404).json({
+        success: false,
+        message: "Profile not found",
+      });
+    }
+
+    if (fullName !== undefined) existingProfile.fullName = fullName;
+    if (age !== undefined) existingProfile.age = Number(age);
+    if (city !== undefined) existingProfile.city = city;
+    if (cityType !== undefined) existingProfile.cityType = cityType;
+    if (riskAppetite !== undefined) existingProfile.riskAppetite = riskAppetite;
+    if (lifeEvents !== undefined) existingProfile.lifeEvents = lifeEvents;
+
+    if (age !== undefined) {
+      existingProfile.yearsToRetirement = 60 - Number(age);
+    }
+
+    await existingProfile.save();
+    await TaxCalculation.deleteMany({
+      userId: req.user.id,
+    });
+
+    await MLSuggestion.deleteMany({
+      userId: req.user.id,
+    });
+    return res.status(200).json({
+      success: true,
+      message: "Profile updated successfully",
+      profile: existingProfile,
+    });
   } catch (error) {
-    res.status(500).json({
+    console.log("PROFILE UPDATE ERROR:", error);
+
+    return res.status(500).json({
       success: false,
       message: "Profile update failed",
       error: error.message,
     });
   }
 };
+
 
 export const updateTaxDetails =
   async (req, res) => {
@@ -194,11 +211,17 @@ export const updateTaxDetails =
             runValidators: true,
           }
         );
+        await TaxCalculation.deleteMany({
+          userId: req.user.id,
+        });
 
-      return res.status(200).json({
-        success: true,
-        profile: updatedProfile,
-      });
+        await MLSuggestion.deleteMany({
+          userId: req.user.id,
+        });
+        return res.status(200).json({
+          success: true,
+          profile: updatedProfile,
+        });
 
     } catch (error) {
 

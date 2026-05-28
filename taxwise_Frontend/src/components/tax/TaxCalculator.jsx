@@ -35,13 +35,11 @@ export default function TaxCalculator() {
             Tax Engine Ready
           </p>
 
-          <h1 className="mt-5 text-4xl font-extrabold">
-            Calculate Your Tax
-          </h1>
+          <h1 className="mt-5 text-4xl font-extrabold">Calculate Your Tax</h1>
 
           <p className="mt-3 max-w-2xl text-sm leading-6 text-[#7f8b85]">
-            TaxWise will use your active salary receipt and latest tax details
-            to compare old regime and new regime.
+            TaxWise uses your active salary receipt and latest profile tax
+            details. Calculation runs only when you click the button.
           </p>
 
           <button
@@ -51,62 +49,54 @@ export default function TaxCalculator() {
             className="mt-7 inline-flex items-center gap-3 rounded-xl bg-gradient-to-r from-[#c9933a] to-[#19b985] px-6 py-4 text-sm font-extrabold text-[#07100d] disabled:cursor-not-allowed disabled:opacity-60"
           >
             <Calculator size={18} />
-            {loading ? "Calculating..." : "Calculate My Tax"}
+            {loading ? "Calculating..." : result ? "Recalculate Tax" : "Calculate My Tax"}
           </button>
 
-          {result && (
-            <div className="mt-8 grid gap-5 lg:grid-cols-3">
-              <TaxCard
-                icon={IndianRupee}
-                label="Old Regime Tax"
-                value={result.taxOldRegime}
-              />
-
-              <TaxCard
-                icon={IndianRupee}
-                label="New Regime Tax"
-                value={result.taxNewRegime}
-              />
-
-              <TaxCard
-                icon={TrendingDown}
-                label="Potential Saving"
-                value={result.potentialSaving}
-              />
-            </div>
+          {!result && (
+            <p className="mt-4 text-sm font-bold text-[#c9933a]">
+              No calculation shown yet. Click Calculate My Tax to generate it.
+            </p>
           )}
 
           {result && (
-            <div className="mt-6 rounded-3xl border border-[#27332f] bg-[#0b1110] p-6">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#19b98520] text-[#19b985]">
-                  <Sparkles size={22} />
-                </div>
-
-                <div>
-                  <p className="text-sm font-bold text-[#7f8b85]">
-                    Recommended Regime
-                  </p>
-
-                  <h2 className="text-2xl font-extrabold capitalize text-[#19b985]">
-                    {result.betterRegime === "same"
-                      ? "Both Same"
-                      : `${result.betterRegime} Regime`}
-                  </h2>
-                </div>
+            <>
+              <div className="mt-8 grid gap-5 lg:grid-cols-3">
+                <TaxCard icon={IndianRupee} label="Old Regime Tax" value={result.taxOldRegime} />
+                <TaxCard icon={IndianRupee} label="New Regime Tax" value={result.taxNewRegime} />
+                <TaxCard icon={TrendingDown} label="Potential Saving" value={result.potentialSaving} />
               </div>
 
-              <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                <MiniBox label="Gross Annual Salary" value={result.grossAnnualSalary} />
-                <MiniBox label="HRA Exemption" value={result.hraExemption} />
-                <MiniBox label="Old Taxable Income" value={result.taxableIncomeOld} />
-                <MiniBox label="New Taxable Income" value={result.taxableIncomeNew} />
-                <MiniBox label="80C Gap" value={result.gap80C} />
-                <MiniBox label="80D Gap" value={result.gap80D} />
-                <MiniBox label="NPS Gap" value={result.gapNPS} />
-                <MiniBox label="Year" value={result.financialYear} isText />
+              <div className="mt-6 rounded-3xl border border-[#27332f] bg-[#0b1110] p-6">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#19b98520] text-[#19b985]">
+                    <Sparkles size={22} />
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-bold text-[#7f8b85]">
+                      Recommended Regime
+                    </p>
+
+                    <h2 className="text-2xl font-extrabold capitalize text-[#19b985]">
+                      {result.betterRegime === "same"
+                        ? "Both Same"
+                        : `${result.betterRegime} Regime`}
+                    </h2>
+                  </div>
+                </div>
+
+                <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                  <MiniBox label="Gross Annual Salary" value={result.grossAnnualSalary} />
+                  <MiniBox label="HRA Exemption" value={result.hraExemption} />
+                  <MiniBox label="Old Taxable Income" value={result.taxableIncomeOld} />
+                  <MiniBox label="New Taxable Income" value={result.taxableIncomeNew} />
+                  <MiniBox label="80C Gap" value={result.gap80C} />
+                  <MiniBox label="80D Gap" value={result.gap80D} />
+                  <MiniBox label="NPS Gap" value={result.gapNPS} />
+                  <MiniBox label="Year" value={result.financialYear} isText />
+                </div>
               </div>
-            </div>
+            </>
           )}
         </div>
       </div>

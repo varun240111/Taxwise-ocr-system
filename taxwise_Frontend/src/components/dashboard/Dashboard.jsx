@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import api from "../../services/api";
-
+import MyTaxPlan from "../plan/MyTaxPlan.jsx";
+import TaxAnalytics from "../analytics/TaxAnalytics.jsx";
+import HRReport from "../reports/HRReport.jsx";
 import SalaryUpload from "../salary/SalaryUpload.jsx";
 import ProfileSetup from "../profile/ProfileSetup.jsx";
 import SalaryRecords from "../salary/SalaryRecords.jsx";
 import TaxCalculator from "../tax/TaxCalculator.jsx";
 
+import Mydocuments from "../documents/Mydocuments.jsx"
 
 import {
   Calculator,
@@ -17,6 +20,7 @@ import {
   Sparkles,
   UploadCloud,
   ArrowRight,
+  BarChart3,
 } from "lucide-react";
 
 import DashboardLayout from "./DashboardLayout";
@@ -24,7 +28,7 @@ import EmptyDashboard from "./EmptyDashboard";
 
 export default function Dashboard() {
   const token = useSelector((state) => state.auth.token);
-
+  const [taxRefreshKey, setTaxRefreshKey] = useState(0);    
   const [activePage, setActivePage] = useState("dashboard");
 
   const [profileCompleted, setProfileCompleted] = useState(false);
@@ -81,8 +85,7 @@ export default function Dashboard() {
           />
         );
       }
-
-      if (!profileCompleted) {
+        if (!profileCompleted) {
         return (
           <ProfileSetup
             setProfileCompleted={setProfileCompleted}
@@ -96,11 +99,15 @@ export default function Dashboard() {
         <SalaryUpload
           onSalarySaved={() => {
             setSalaryUploaded(true);
+            setTaxRefreshKey((prev) => prev + 1);
             setActivePage("calculator");
           }}
         />
       );
     }
+    if (activePage === "documents") {
+        return <Mydocuments />;
+      }
 
     if (activePage === "profile") {
       return (
@@ -116,11 +123,31 @@ export default function Dashboard() {
         <SalaryRecords
           onActiveChanged={() => {
             setSalaryUploaded(true);
+            setTaxRefreshKey((prev) => prev + 1);
+            setActivePage("calculator");
           }}
         />
       );
     }
 
+    
+    if (activePage === "hr") {
+      if (!salaryUploaded) {
+        return (
+          <PageBox
+            icon={FileText}
+            title="HR Report"
+            tag="Locked"
+            text="Upload salary slip and calculate tax first."
+            button="Upload salary slip first"
+            onClick={() => setActivePage("upload")}
+            locked
+          />
+        );
+      }
+
+      return <HRReport />;
+    }
    if (activePage === "calculator") {
       if (checkingSalary) {
         return (
@@ -145,9 +172,42 @@ export default function Dashboard() {
         );
       }
 
-      return <TaxCalculator />;
+      return <TaxCalculator refreshKey={taxRefreshKey} />;
+    }
+    if (activePage === "plan") {
+        if (!salaryUploaded) {
+          return (
+            <PageBox
+              icon={Sparkles}
+              title="My Tax Plan"
+              tag="Locked"
+              text="Upload salary slip and calculate tax first."
+              button="Upload salary slip first"
+              onClick={() => setActivePage("upload")}
+              locked
+            />
+          );
+        }
+
+        return <MyTaxPlan />;
+      }
+      if (activePage === "analytics") {
+      if (!salaryUploaded) {
+      return (
+        <PageBox
+          icon={BarChart3}
+          title="Tax Analytics"
+          tag="Locked"
+          text="Upload salary slip and calculate tax first."
+          button="Upload salary slip first"
+          onClick={() => setActivePage("upload")}
+          locked
+        />
+      );
     }
 
+    return <TaxAnalytics />;
+  }
     const pages = {
       plan: {
         icon: Sparkles,
@@ -172,6 +232,11 @@ export default function Dashboard() {
         title: "Settings",
         text: "Manage account preferences and security.",
       },
+      analytics: {
+      icon: BarChart3,
+      title: "Tax Analytics",
+      text: "Visualize tax comparison, deduction gaps, and savings.",
+    },
     };
 
     const page = pages[activePage];
@@ -206,7 +271,11 @@ export default function Dashboard() {
   };
 
   return (
-    <DashboardLayout activePage={activePage} setActivePage={setActivePage}>
+    <DashboardLayout
+      activePage={activePage}
+      setActivePage={setActivePage}
+      profileCompleted={profileCompleted}
+    >
       {renderPage()}
     </DashboardLayout>
   );

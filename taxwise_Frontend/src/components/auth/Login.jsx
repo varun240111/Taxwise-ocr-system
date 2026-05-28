@@ -36,11 +36,9 @@ export default function Login() {
   try {
     const response = await api.post("/auth/login", formData);
 
-    console.log("Login Success:", response.data);
+    console.log("Login Success:");
 
     const token = response.data.token;
-
-    console.log("JWT Token:", token);
     dispatch(setCredentials({ token:response.data.token,
       user:response.data.user,
     }));

@@ -16,7 +16,7 @@ router.post("/setup", authMiddleware, setupProfile);
 
 router.get("/check", authMiddleware, checkProfile);
 
-router.get("/me", authMiddleware, getProfile);
+router.get("/", authMiddleware, getProfile);
 router.put("/update", authMiddleware, updateProfile);
 router.patch(
   "/tax-details",

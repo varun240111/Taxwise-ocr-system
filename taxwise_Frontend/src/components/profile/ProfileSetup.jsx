@@ -9,6 +9,8 @@ export default function ProfileSetup({
 }) {
   const token = useSelector((state) => state.auth.token);
 
+  const [originalData, setOriginalData] = useState({});
+
   const [isEditMode, setIsEditMode] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +34,7 @@ export default function ProfileSetup({
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await api.get("/profile/me", {
+        const res = await api.get("/profile", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -64,6 +66,21 @@ export default function ProfileSetup({
             }).filter(Boolean) || [],
             });
         setIsEditMode(true);
+        setOriginalData({
+        fullName: profile.fullName || "",
+        age: profile.age || "",
+        city: profile.city || "",
+        cityType: profile.cityType || "metro",
+        riskAppetite: profile.riskAppetite || "medium",
+        lifeEvents:
+          profile.lifeEvents?.map((item) => {
+            if (typeof item === "string") return item;
+
+            if (item?.event) return item.event;
+
+            return null;
+          }).filter(Boolean) || [],
+      });
       } catch (error) {
         setIsEditMode(false);
       } finally {
@@ -90,47 +107,92 @@ export default function ProfileSetup({
     }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+      const handleSubmit = async (e) => {
+      e.preventDefault();
 
-    const payload = {
-      ...formData,
-      lifeEvents: formData.lifeEvents.map((event) => ({
-        event,
-        date: new Date(),
-      })),
+      try {
+
+        // CREATE MODE
+        if (!isEditMode) {
+
+          const payload = {
+            ...formData,
+            lifeEvents: formData.lifeEvents.map((event) => ({
+              event,
+              date: new Date(),
+            })),
+          };
+          
+          await api.post("/profile/setup", payload, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          alert("Profile completed successfully");
+        }
+
+        // UPDATE MODE
+        else {
+
+          const updatedFields = {};
+
+          Object.keys(formData).forEach((key) => {
+
+            const currentValue =
+              JSON.stringify(formData[key]);
+
+            const originalValue =
+              JSON.stringify(originalData[key]);
+
+            if (currentValue !== originalValue) {
+
+              if (key === "lifeEvents") {
+
+                updatedFields[key] =
+                  formData.lifeEvents.map((event) => ({
+                    event,
+                    date: new Date(),
+                  }));
+
+              } else {
+
+                updatedFields[key] = formData[key];
+              }
+            }
+          });
+
+          // nothing changed
+          if (Object.keys(updatedFields).length === 0) {
+            alert("No changes detected");
+            return;
+          }
+
+          await api.put("/profile/update", updatedFields, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          alert("Profile updated successfully");
+        }
+
+        setProfileCompleted?.(true);
+
+        if (redirectAfterSetup === "upload") {
+          setActivePage?.("upload");
+        } else {
+          setActivePage?.("dashboard");
+        }
+
+      } catch (error) {
+
+        alert(
+          error.response?.data?.message ||
+          "Profile save failed"
+        );
+      }
     };
-
-    try {
-      if (isEditMode) {
-        await api.put("/profile/update", payload, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        alert("Profile updated successfully");
-      } else {
-        await api.post("/profile/setup", payload, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-
-        alert("Profile completed successfully");
-      }
-
-      setProfileCompleted?.(true);
-
-      if (redirectAfterSetup === "upload") {
-        setActivePage?.("upload");
-      } else {
-        setActivePage?.("dashboard");
-      }
-    } catch (error) {
-      alert(error.response?.data?.message || "Profile save failed");
-    }
-  };
 
   if (loading) {
     return (

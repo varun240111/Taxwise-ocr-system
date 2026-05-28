@@ -9,6 +9,9 @@ import cookieParser from "cookie-parser";
 import profileRoutes from "./routes/profileRoutes.js";
 import salaryRoutes from "./routes/salaryRoutes.js";
 import taxRoutes from "./routes/taxRoutes.js";
+import suggestionRoutes from "./routes/suggestionRoutes.js";
+import reportRoutes from "./routes/reportRoutes.js";
+import documentRoutes from "./routes/documentRoutes.js";
 
 connectDB();
 
@@ -32,6 +35,9 @@ app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/api/salary", salaryRoutes);
 app.use("/api/tax", taxRoutes);
+app.use("/api/suggestions", suggestionRoutes);
+app.use("/api/reports", reportRoutes);
+app.use("/api/documents", documentRoutes);
 
 const PORT = process.env.PORT || 5000;
 

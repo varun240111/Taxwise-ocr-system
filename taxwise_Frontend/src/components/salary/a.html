@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TaxWise Vault — Complete Technical Coding Workflow</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#020617;--bg2:#060d1a;--bg3:#0a1120;--card:#0c1525;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.12);
+  --txt:#e8edf3;--txt2:#8a96a3;--txt3:#3d4f63;
+  --gold:#D4A847;--gold-dim:rgba(212,168,71,0.15);--gold-line:rgba(212,168,71,0.3);
+  --green:#00D97E;--green-dim:rgba(0,217,126,0.1);
+  --blue:#3B9EFF;--blue-dim:rgba(59,158,255,0.1);
+  --purple:#9B7FFF;--purple-dim:rgba(155,127,255,0.1);
+  --red:#FF5C5C;--red-dim:rgba(255,92,92,0.1);
+  --amber:#F5A623;--amber-dim:rgba(245,166,35,0.1);
+  --teal:#00CCC0;--teal-dim:rgba(0,204,192,0.1);
+  --mono:'JetBrains Mono',monospace;
+  --sans:'DM Sans',sans-serif;
+  --serif:'Playfair Display',Georgia,serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:var(--sans);font-size:13px;line-height:1.6}
+.page{max-width:1100px;margin:0 auto;padding:40px 24px 100px}
+
+/* ── HEADER ── */
+.hdr{padding:52px 48px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;margin-bottom:40px;position:relative;overflow:hidden}
+.hdr::before{content:'';position:absolute;top:0;right:0;width:60%;height:100%;background:radial-gradient(ellipse at 80% 50%,rgba(212,168,71,0.05),transparent 70%);pointer-events:none}
+.hdr-tag{font-family:var(--mono);font-size:10px;color:var(--gold);letter-spacing:.15em;padding:3px 12px;border:1px solid var(--gold-line);border-radius:3px;display:inline-block;margin-bottom:16px}
+.hdr-title{font-family:var(--serif);font-size:36px;color:var(--txt);margin-bottom:6px;line-height:1.15}
+.hdr-title em{color:var(--gold);font-style:italic}
+.hdr-sub{font-size:13.5px;color:var(--txt2);max-width:640px;line-height:1.75;margin-bottom:24px}
+.hdr-pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-family:var(--mono);font-size:10px;padding:3px 10px;border-radius:3px;border:1px solid}
+.pg{color:var(--green);border-color:rgba(0,217,126,0.3);background:var(--green-dim)}
+.pb{color:var(--blue);border-color:rgba(59,158,255,0.3);background:var(--blue-dim)}
+.pp{color:var(--purple);border-color:rgba(155,127,255,0.3);background:var(--purple-dim)}
+.pa{color:var(--amber);border-color:rgba(245,166,35,0.3);background:var(--amber-dim)}
+.pt{color:var(--teal);border-color:rgba(0,204,192,0.3);background:var(--teal-dim)}
+.pr{color:var(--red);border-color:rgba(255,92,92,0.3);background:var(--red-dim)}
+.pgold{color:var(--gold);border-color:var(--gold-line);background:var(--gold-dim)}
+
+/* ── PHASE HEADER ── */
+.phase-hdr{display:flex;align-items:center;gap:14px;padding:12px 20px;border-radius:10px;margin-bottom:16px;border:1px solid}
+.phase-num{font-family:var(--mono);font-size:11px;font-weight:700;padding:3px 10px;border-radius:4px}
+.phase-label{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--txt);flex:1}
+.phase-tag{font-family:var(--mono);font-size:9px;color:var(--txt3);letter-spacing:.08em;margin-left:auto}
+
+/* ── STEP ── */
+.step{background:var(--card);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden;transition:border-color .2s}
+.step:hover{border-color:rgba(212,168,71,0.2)}
+.step-hdr{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid var(--border)}
+.step-n{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--txt3);width:32px;flex-shrink:0;padding-top:2px}
+.step-info{flex:1}
+.step-title{font-size:14px;font-weight:700;color:var(--txt);margin-bottom:3px;letter-spacing:-.01em}
+.step-desc{font-size:12px;color:var(--txt2);line-height:1.6}
+.step-badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.step-body{padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+
+/* ── CODE ── */
+.code{background:#060c18;border:1px solid rgba(255,255,255,0.06);border-radius:8px;overflow:hidden}
+.code-bar{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;background:#08101e;border-bottom:1px solid rgba(255,255,255,0.05)}
+.code-lang{font-family:var(--mono);font-size:9px;color:var(--txt3);letter-spacing:.1em;text-transform:uppercase}
+.code-file{font-family:var(--mono);font-size:10px;color:var(--amber)}
+.code-body{padding:14px 16px;font-family:var(--mono);font-size:10.5px;line-height:1.75;color:#c8d3e0;white-space:pre;overflow-x:auto}
+.kw{color:#9B7FFF}.fn{color:#3B9EFF}.str{color:#00D97E}.cm{color:#2d3f52;font-style:italic}
+.var{color:#F5A623}.prop{color:#ff9060}.num{color:#ff7eb3}.cls{color:#00CCC0}.op{color:#D4A847}
+
+/* ── GRID COLS ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+
+/* ── INFO CARDS ── */
+.ic{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:13px 15px}
+.ic-title{font-family:var(--mono);font-size:9px;color:var(--txt3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+.ic-body{font-size:12px;color:var(--txt2);line-height:1.65}
+
+/* ── HIGHLIGHT BOXES ── */
+.hl{border-radius:7px;padding:11px 14px;font-size:12px;line-height:1.7}
+.hl-gold{background:var(--gold-dim);border:1px solid var(--gold-line);color:rgba(212,168,71,0.9)}
+.hl-green{background:var(--green-dim);border:1px solid rgba(0,217,126,0.2);color:rgba(0,217,126,0.9)}
+.hl-blue{background:var(--blue-dim);border:1px solid rgba(59,158,255,0.2);color:rgba(59,158,255,0.9)}
+.hl-purple{background:var(--purple-dim);border:1px solid rgba(155,127,255,0.2);color:rgba(155,127,255,0.9)}
+.hl-red{background:var(--red-dim);border:1px solid rgba(255,92,92,0.2);color:rgba(255,92,92,0.9)}
+.hl-amber{background:var(--amber-dim);border:1px solid rgba(245,166,35,0.2);color:rgba(245,166,35,0.9)}
+
+/* ── BULLETS ── */
+ul.bl{list-style:none;padding:0;display:flex;flex-direction:column;gap:4px}
+ul.bl li{font-size:12px;color:var(--txt2);padding-left:14px;position:relative;line-height:1.55}
+ul.bl li::before{content:'›';position:absolute;left:2px;color:var(--gold);font-weight:700}
+
+/* ── FLOW ARROWS ── */
+.flow{display:flex;flex-direction:column;gap:4px}
+.flow-row{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--txt2)}
+.flow-arrow{color:var(--green);font-size:13px;flex-shrink:0;margin-top:1px}
+code.ic{display:inline;background:rgba(245,166,35,0.08);border:1px solid rgba(245,166,35,0.2);border-radius:3px;padding:1px 6px;font-family:var(--mono);font-size:10px;color:var(--amber)}
+
+/* ── SCHEMA ── */
+.schema{background:#060c18;border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:14px 16px;font-family:var(--mono);font-size:10.5px;line-height:1.85;color:#c8d3e0;white-space:pre;overflow-x:auto}
+
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;font-size:11.5px}
+.tbl th{background:var(--bg3);color:var(--txt2);padding:7px 11px;text-align:left;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:9.5px;letter-spacing:.06em;font-weight:600}
+.tbl td{padding:7px 11px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--txt2);vertical-align:top}
+.tbl tr:last-child td{border:none}
+.tbl tr:hover td{background:rgba(255,255,255,0.015)}
+
+/* ── DECISION DIAMOND ── */
+.decision{display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:8px;background:rgba(245,166,35,0.06);border:1px solid rgba(245,166,35,0.2);font-size:12px;color:var(--amber);font-weight:600;margin:4px 0}
+.decision::before{content:'◆';font-size:14px;flex-shrink:0}
+
+/* ── CONNECTOR ── */
+.conn{display:flex;flex-direction:column;align-items:center;margin:8px 0;gap:3px}
+.conn-line{width:2px;height:18px;background:linear-gradient(to bottom,rgba(212,168,71,0.4),rgba(212,168,71,0.05))}
+.conn-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px rgba(212,168,71,0.5)}
+
+/* ── PHASE COLORS ── */
+.phase-1{background:rgba(0,217,126,0.04);border-color:rgba(0,217,126,0.2)}
+.phase-2{background:rgba(245,166,35,0.04);border-color:rgba(245,166,35,0.2)}
+.phase-3{background:rgba(155,127,255,0.04);border-color:rgba(155,127,255,0.2)}
+.phase-4{background:rgba(59,158,255,0.04);border-color:rgba(59,158,255,0.2)}
+.phase-5{background:rgba(212,168,71,0.04);border-color:rgba(212,168,71,0.2)}
+.phase-6{background:rgba(0,204,192,0.04);border-color:rgba(0,204,192,0.2)}
+.phase-7{background:rgba(255,92,92,0.04);border-color:rgba(255,92,92,0.2)}
+.phase-8{background:rgba(0,217,126,0.04);border-color:rgba(0,217,126,0.2)}
+
+.n1{background:rgba(0,217,126,0.12);color:var(--green)}
+.n2{background:rgba(245,166,35,0.12);color:var(--amber)}
+.n3{background:rgba(155,127,255,0.12);color:var(--purple)}
+.n4{background:rgba(59,158,255,0.12);color:var(--blue)}
+.n5{background:rgba(212,168,71,0.12);color:var(--gold)}
+.n6{background:rgba(0,204,192,0.12);color:var(--teal)}
+.n7{background:rgba(255,92,92,0.12);color:var(--red)}
+.n8{background:rgba(0,217,126,0.12);color:var(--green)}
+
+/* sticky nav */
+.sticky-nav{position:sticky;top:0;z-index:100;background:rgba(2,6,23,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:10px 0;margin-bottom:32px;overflow-x:auto;white-space:nowrap}
+.snav-inner{display:flex;gap:4px;padding:0 4px}
+.snav-btn{font-family:var(--mono);font-size:10px;padding:5px 12px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--txt3);cursor:pointer;letter-spacing:.06em;text-decoration:none;display:inline-block;transition:all .15s}
+.snav-btn:hover{color:var(--gold);border-color:var(--gold-line);background:var(--gold-dim)}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-tag">TAXWISE VAULT — COMPLETE TECHNICAL CODING WORKFLOW</div>
+  <div class="hdr-title">From Splash Screen <em>to Investment Advice</em></div>
+  <div class="hdr-sub">Every line of logic, every MongoDB query, every API call — explained in exact coding order. Follow this phase by phase and your full app is built.</div>
+  <div class="hdr-pills">
+    <span class="pill pg">React.js</span><span class="pill pg">Node.js</span><span class="pill pg">Express</span><span class="pill pg">MongoDB</span>
+    <span class="pill pb">JWT + Cookies</span><span class="pill pp">Python Flask</span><span class="pill pa">scikit-learn</span>
+    <span class="pill pt">AWS S3</span><span class="pill pgold">Tesseract OCR</span><span class="pill pr">PDFKit</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav class="sticky-nav"><div class="snav-inner">
+  <a class="snav-btn" href="#p1">01 Splash</a>
+  <a class="snav-btn" href="#p2">02 Auth</a>
+  <a class="snav-btn" href="#p3">03 Profile</a>
+  <a class="snav-btn" href="#p4">04 Salary OCR</a>
+  <a class="snav-btn" href="#p5">05 Rule Engine</a>
+  <a class="snav-btn" href="#p6">06 ML Model</a>
+  <a class="snav-btn" href="#p7">07 Dashboard</a>
+  <a class="snav-btn" href="#p8">08 Documents</a>
+  <a class="snav-btn" href="#p9">09 HR Report</a>
+  <a class="snav-btn" href="#p10">10 Alerts</a>
+  <a class="snav-btn" href="#p11">11 Life Events</a>
+  <a class="snav-btn" href="#p12">12 Next Year ML</a>
+</div></nav>
+
+<!-- ═══════════════════════════════════════════
+     PHASE 1 — SPLASH SCREEN
+═══════════════════════════════════════════ -->
+<div id="p1">
+<div class="phase-hdr phase-1">
+  <span class="phase-num n1">PHASE 01</span>
+  <span class="phase-label">Splash / Welcome Screen — 3 Seconds</span>
+  <span class="phase-tag">SplashPage.jsx · App.jsx</span>
+</div>
+
+<div class="step">
+  <div class="step-hdr">
+    <span class="step-n">1.1</span>
+    <div class="step-info">
+      <div class="step-title">App Entry Point — React Router Setup</div>
+      <div class="step-desc">First file you write. Define all routes. Splash is the default "/" route. Every other route is protected by a ProtectedRoute wrapper.</div>
+      <div class="step-badges"><span class="pill pg">App.jsx</span><span class="pill pb">React Router v6</span></div>
+    </div>
+  </div>
+  <div class="step-body">
+    <div class="g2">
+      <div class="code">
+        <div class="code-bar"><span class="code-lang">jsx</span><span class="code-file">src/App.jsx</span></div>
+        <div class="code-body"><span class="kw">import</span> { <span class="cls">BrowserRouter</span>, <span class="cls">Routes</span>, <span class="cls">Route</span> } <span class="kw">from</span> <span class="str">'react-router-dom'</span>
+<span class="kw">import</span> <span class="cls">ProtectedRoute</span> <span class="kw">from</span> <span class="str">'./components/ProtectedRoute'</span>
+
+<span class="kw">export default function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> (
+    &lt;<span class="cls">BrowserRouter</span>&gt;
+      &lt;<span class="cls">Routes</span>&gt;
+        &lt;<span class="cm">{/* PUBLIC — no login needed */}</span>
+        &lt;<span class="cls">Route</span> path=<span class="str">"/"</span>          element={&lt;<span class="cls">SplashPage</span> /&gt;} /&gt;
+        &lt;<span class="cls">Route</span> path=<span class="str">"/login"</span>     element={&lt;<span class="cls">LoginPage</span> /&gt;} /&gt;
+        &lt;<span class="cls">Route</span> path=<span class="str">"/signup"</span>    element={&lt;<span class="cls">SignupPage</span> /&gt;} /&gt;
+        &lt;<span class="cls">Route</span> path=<span class="str">"/verify-otp"</span> element={&lt;<span class="cls">OTPPage</span> /&gt;} /&gt;
+
+        &lt;<span class="cm">{/* PROTECTED — need JWT token */}</span>
+        &lt;<span class="cls">Route</span> path=<span class="str">"/profile-setup"</span> element={
+          &lt;<span class="cls">ProtectedRoute</span>&gt;&lt;<span class="cls">ProfileSetupPage</span> /&gt;&lt;/<span class="cls">ProtectedRoute</span>&gt;
+        } /&gt;
+        &lt;<span class="cls">Route</span> path=<span class="str">"/dashboard"</span> element={
+          &lt;<span class="cls">ProtectedRoute</span> <span class="prop">requireProfile</span>&gt;&lt;<span class="cls">DashboardPage</span> /&gt;&lt;/<span class="cls">ProtectedRoute</span>&gt;
+        } /&gt;
+        &lt;<span class="cls">Route</span> path=<span class="str">"/salary-upload"</span> element={
+          &lt;<span class="cls">ProtectedRoute</span> <span class="prop">requireProfile</span>&gt;&lt;<span class="cls">SalaryUploadPage</span> /&gt;&lt;/<span class="cls">ProtectedRoute</span>&gt;
+        } /&gt;
+        &lt;<span class="cls">Route</span> path=<span class="str">"/suggestions"</span> element={
+          &lt;<span class="cls">ProtectedRoute</span> <span class="prop">requireProfile</span>&gt;&lt;<span class="cls">SuggestionsPage</span> /&gt;&lt;/<span class="cls">ProtectedRoute</span>&gt;
+        } /&gt;
+        &lt;<span class="cls">Route</span> path=<span class="str">"/documents"</span> element={
+          &lt;<span class="cls">ProtectedRoute</span> <span class="prop">requireProfile</span>&gt;&lt;<span class="cls">DocumentsPage</span> /&gt;&lt;/<span class="cls">ProtectedRoute</span>&gt;
+        } /&gt;
+        &lt;<span class="cls">Route</span> path=<span class="str">"/hr-report"</span> element={
+          &lt;<span class="cls">ProtectedRoute</span> <span class="prop">requireProfile</span>&gt;&lt;<span class="cls">HRReportPage</span> /&gt;&lt;/<span class="cls">ProtectedRoute</span>&gt;
+        } /&gt;
+      &lt;/<span class="cls">Routes</span>&gt;
+    &lt;/<span class="cls">BrowserRouter</span>&gt;
+  )
+}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="code">
+          <div class="code-bar"><span class="code-lang">jsx</span><span class="code-file">pages/SplashPage.jsx</span></div>
+          <div class="code-body"><span class="kw">export default function</span> <span class="fn">SplashPage</span>() {
+  <span class="kw">const</span> <span class="var">navigate</span> = <span class="fn">useNavigate</span>()
+  <span class="kw">const</span> <span class="var">dispatch</span>  = <span class="fn">useDispatch</span>()
+
+  <span class="fn">useEffect</span>(() => {
+    <span class="kw">const</span> <span class="fn">boot</span> = <span class="kw">async</span> () => {
+      <span class="kw">try</span> {
+        <span class="cm">// Silently check if cookie is still valid</span>
+        <span class="kw">const</span> { <span class="var">data</span> } = <span class="kw">await</span> <span class="var">api</span>.<span class="fn">post</span>(<span class="str">'/auth/refresh'</span>)
+        <span class="var">dispatch</span>(<span class="fn">setAuth</span>(<span class="var">data</span>))  <span class="cm">// store token + user</span>
+
+        <span class="cm">// Check if profile setup is done</span>
+        <span class="kw">const</span> <span class="var">hasProfile</span> = <span class="var">data</span>.<span class="prop">user</span>.<span class="prop">profile_complete</span>
+
+        <span class="fn">setTimeout</span>(() =>
+          <span class="var">navigate</span>(<span class="var">hasProfile</span> ? <span class="str">'/dashboard'</span> : <span class="str">'/profile-setup'</span>),
+          <span class="num">3000</span>
+        )
+      } <span class="kw">catch</span> {
+        <span class="cm">// No valid cookie → go to login</span>
+        <span class="fn">setTimeout</span>(() => <span class="var">navigate</span>(<span class="str">'/login'</span>), <span class="num">3000</span>)
+      }
+    }
+    <span class="fn">boot</span>()
+  }, [])
+
+  <span class="kw">return</span> &lt;<span class="cls">SplashUI</span> /&gt; <span class="cm">// gold animation screen</span>
+}</div>
+        </div>
+        <div class="hl hl-gold"><b>Key point:</b> During the 3-second splash, two things happen simultaneously — (1) the beautiful animation plays, and (2) the app silently calls /auth/refresh to check if the browser still has a valid HTTP-only refresh token cookie. If yes → skip login entirely → go straight to dashboard. User never has to login again for 7 days.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-hdr">
+    <span class="step-n">1.2</span>
+    <div class="step-info">
+      <div class="step-title">ProtectedRoute — Two Levels of Guard</div>
+      <div class="step-desc">requireProfile prop adds a second check — if user is logged in but hasn't set up their profile yet, they're redirected to /profile-setup instead of accessing the dashboard.</div>
+    </div>
+  </div>
+  <div class="step-body">
+    <div class="code">
+      <div class="code-bar"><span class="code-lang">jsx</span><span class="code-file">components/ProtectedRoute.jsx</span></div>
+      <div class="code-body"><span class="kw">export default function</span> <span class="fn">ProtectedRoute</span>({ <span class="var">children</span>, <span class="var">requireProfile</span> = <span class="num">false</span> }) {
+  <span class="kw">const</span> { <span class="var">token</span>, <span class="var">user</span> } = <span class="fn">useSelector</span>(<span class="var">s</span> => <span class="var">s</span>.<span class="prop">auth</span>)
+
+  <span class="cm">// GUARD 1: Not logged in → login page</span>
+  <span class="kw">if</span> (!<span class="var">token</span>) <span class="kw">return</span> &lt;<span class="cls">Navigate</span> to=<span class="str">"/login"</span> replace /&gt;
+
+  <span class="cm">// GUARD 2: Logged in but no profile → profile setup</span>
+  <span class="kw">if</span> (<span class="var">requireProfile</span> && !<span class="var">user</span>?.<span class="prop">profile_complete</span>) {
+    <span class="kw">return</span> &lt;<span class="cls">Navigate</span> to=<span class="str">"/profile-setup"</span> replace /&gt;
+  }
+
+  <span class="kw">return</span> <span class="var">children</span>
+}</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PHASE 2 — AUTH
+═══════════════════════════════════════════ -->
+<div id="p2" style="margin-top:40px">
+<div class="phase-hdr phase-2">
+  <span class="phase-num n2">PHASE 02</span>
+  <span class="phase-label">Authentication — Signup → OTP → Login → Cookies</span>
+  <span class="phase-tag">authController.js · User.js · authSlice.js</span>
+</div>
+
+<div class="step">
+  <div class="step-hdr">
+    <span class="step-n">2.1</span>
+    <div class="step-info">
+      <div class="step-title">MongoDB — Users Collection Schema</div>
+      <div class="step-desc">Create this first. Only stores login data — no financial data here. Financial data is in user_profiles collection (separate). password_hash is auto-hashed by the pre-save Mongoose hook.</div>
+      <div class="step-badges"><span class="pill pg">models/User.js</span><span class="pill pr">bcrypt salt=12</span></div>
+    </div>
+  </div>
+  <div class="step-body">
+    <div class="g2">
+      <div class="schema"><span class="cm">// MongoDB document structure — users collection</span>
+{
+  <span class="prop">_id</span>:            ObjectId <span class="cm">// auto</span>,
+  <span class="prop">name</span>:           <span class="str">"Rahul Sharma"</span>,
+  <span class="prop">email</span>:          <span class="str">"rahul@company.com"</span>,  <span class="cm">// unique index</span>
+  <span class="prop">phone</span>:          <span class="str">"9876543210"</span>,         <span class="cm">// unique index</span>
+  <span class="prop">password_hash</span>:  <span class="str">"$2b$12$uKv9..."</span>,      <span class="cm">// bcrypt — NEVER plain</span>
+  <span class="prop">is_verified</span>:   <span class="num">false</span>,                <span class="cm">// true after OTP</span>
+  <span class="prop">profile_complete</span>: <span class="num">false</span>,            <span class="cm">// true after onboarding</span>
+  <span class="prop">refresh_token</span>:  <span class="num">null</span>,               <span class="cm">// set on login, cleared on logout</span>
+  <span class="prop">financial_year</span>: <span class="str">"2024-25"</span>,
+  <span class="prop">last_login</span>:     ISODate,
+  <span class="prop">created_at</span>:     ISODate
+}</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="hl hl-amber"><b>profile_complete field is the key flag.</b> When ProtectedRoute checks this, it decides: go to /dashboard OR redirect to /profile-setup. It's set to true only after the user finishes the 4-step onboarding wizard.</div>
+        <div class="hl hl-purple"><b>refresh_token in MongoDB = server-side logout.</b> On logout, set this to null. Even if someone stole the cookie, the backend rejects it because the DB value is null now.</div>
+        <div class="ic">
+          <div class="ic-title">OTP Collection (separate, TTL index)</div>
+          <div class="ic-body">Store OTP in a separate collection with a <b>MongoDB TTL index</b> on expires_at. Set expiry to 10 minutes. MongoDB auto-deletes the document when it expires — no cron job needed.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-hdr">
+    <span class="step-n">2.2</span>
+    <div class="step-info">
+      <div class="step-title">Signup Flow — POST /api/auth/register</div>
+      <div class="step-desc">React form → Express validates → check duplicate → hash password (pre-save hook) → create user → generate OTP → send SMS → respond with userId for OTP screen</div>
+    </div>
+  </div>
+  <div class="step-body">
+    <div class="g2">
+      <div class="flow">
+        <div class="flow-row"><span class="flow-arrow">1</span><span>User fills signup form: name, email, phone, password</span></div>
+        <div class="flow-row"><span class="flow-arrow">2</span><span>React calls <code class="ic">POST /api/auth/register</code> with <code class="ic">withCredentials:true</code></span></div>
+        <div class="flow-row"><span class="flow-arrow">3</span><span>Express: <code class="ic">express-validator</code> checks email format, password ≥ 8 chars, phone 10 digits</span></div>
+        <div class="flow-row"><span class="flow-arrow">4</span><span><code class="ic">User.findOne({'{'}email{'}'}) </code>— if exists → return 409 Conflict</span></div>
+        <div class="flow-row"><span class="flow-arrow">5</span><span><code class="ic">User.create({'{'}name,email,phone, password_hash:password{'}'})</code> — pre-save hook runs bcrypt.hash(12)</span></div>
+        <div class="flow-row"><span class="flow-arrow">6</span><span>Generate 6-digit OTP → <code class="ic">OTP.create({'{'}phone, otp, expires_at: +10min{'}'})</code></span></div>
+        <div class="flow-row"><span class="flow-arrow">7</span><span>Send OTP via Twilio SMS or Nodemailer email</span></div>
+        <div class="flow-row"><span class="flow-arrow">8</span><span>Return <code class="ic">{'{'} message:'OTP sent', userId {'}'}</code> → React navigates to /verify-otp</span></div>
+        <div class="flow-row"><span class="flow-arrow">9</span><span>User enters OTP → POST /api/auth/verify-otp → match? → set <code class="ic">is_verified:true</code> → delete OTP doc</span></div>
+      </div>
+      <div class="code">
+        <div class="code-bar"><span class="code-lang">js</span><span class="code-file">controllers/authController.js — register</span></div>
+        <div class="code-body"><span class="kw">const</span> <span class="fn">register</span> = <span class="kw">async</span> (<span class="var">req</span>, <span class="var">res</span>) => {
+  <span class="kw">const</span> { <span class="var">name</span>, <span class="var">email</span>, <span class="var">phone</span>, <span class="var">password</span> } = <span class="var">req</span>.<span class="prop">body</span>
+
+  <span class="kw">const</span> <span class="var">exists</span> = <span class="kw">await</span> <span class="cls">User</span>.<span class="fn">findOne</span>({
+    <span class="op">$or</span>: [{ <span class="var">email</span> }, { <span class="var">phone</span> }]
+  })
+  <span class="kw">if</span> (<span class="var">exists</span>) <span class="kw">return</span> <span class="var">res</span>.<span class="fn">status</span>(<span class="num">409</span>).<span class="fn">json</span>(
+    { error: <span class="str">'Email or phone already registered'</span> }
+  )
+
+  <span class="cm">// password_hash field → pre('save') hook hashes it</span>
+  <span class="kw">const</span> <span class="var">user</span> = <span class="kw">await</span> <span class="cls">User</span>.<span class="fn">create</span>({
+    <span class="var">name</span>, <span class="var">email</span>, <span class="var">phone</span>, password_hash: <span class="var">password</span>
+  })
+
+  <span class="kw">const</span> <span class="var">otp</span> = <span class="fn">Math</span>.<span class="fn">floor</span>(<span class="num">100000</span> + <span class="fn">Math</span>.<span class="fn">random</span>() * <span class="num">900000</span>).<span class="fn">toString</span>()
+  <span class="kw">await</span> <span class="cls">OTP</span>.<span class="fn">create</span>({ phone, otp_code: <span class="var">otp</span>,
+    expires_at: <span class="kw">new</span> <span class="cls">Date</span>(<span class="cls">Date</span>.<span class="fn">now</span>() + <span class="num">10</span>*<span class="num">60</span>*<span class="num">1000</span>) })
+  <span class="kw">await</span> <span class="fn">sendSMS</span>(<span class="var">phone</span>, <span class="str">`Your TaxWise OTP: ${otp}`</span>)
+
+  <span class="var">res</span>.<span class="fn">status</span>(<span class="num">201</span>).<span class="fn">json</span>({ message: <span class="str">'OTP sent'</span>, userId: <span class="var">user</span>.<span class="prop">_id</span> })
+}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-hdr">
+    <span class="step-n">2.3</span>
+    <div class="step-info">
+      <div class="step-title">Login → JWT Tokens → HTTP-only Cookie Set</div>
+      <div class="step-desc">Creates two tokens: Access Token (15 min, returned in JSON) and Refresh Token (7 days, set as HTTP-only cookie). React stores access token in Redux memory only — never localStorage.</div>
+    </div>
+  </div>
+  <div class="step-body">
+    <div class="g2">
+      <div class="code">
+        <div class="code-bar"><span class="code-lang">js</span><span class="code-file">controllers/authController.js — login</span></div>
+        <div class="code-body"><span class="kw">const</span> <span class="fn">login</span> = <span class="kw">async</span> (<span class="var">req</span>, <span class="var">res</span>) => {
+  <span class="kw">const</span> { <span class="var">email</span>, <span class="var">password</span> } = <span class="var">req</span>.<span class="prop">body</span>
+  <span class="kw">const</span> <span class="var">user</span> = <span class="kw">await</span> <span class="cls">User</span>.<span class="fn">findOne</span>({ <span class="var">email</span> })
+  <span class="kw">if</span> (!<span class="var">user</span>) <span class="kw">return</span> <span class="var">res</span>.<span class="fn">status</span>(<span class="num">404</span>).<span class="fn">json</span>({ error: <span class="str">'Not found'</span> })
+
+  <span class="kw">const</span> <span class="var">ok</span> = <span class="kw">await</span> <span class="var">bcrypt</span>.<span class="fn">compare</span>(<span class="var">password</span>, <span class="var">user</span>.<span class="prop">password_hash</span>)
+  <span class="kw">if</span> (!<span class="var">ok</span>) <span class="kw">return</span> <span class="var">res</span>.<span class="fn">status</span>(<span class="num">401</span>).<span class="fn">json</span>({ error: <span class="str">'Wrong password'</span> })
+
+  <span class="cm">// ACCESS TOKEN — 15 minutes</span>
+  <span class="kw">const</span> <span class="var">accessToken</span> = <span class="var">jwt</span>.<span class="fn">sign</span>(
+    { userId: <span class="var">user</span>.<span class="prop">_id</span>, email: <span class="var">user</span>.<span class="prop">email</span> },
+    <span class="var">process</span>.<span class="prop">env</span>.<span class="prop">JWT_SECRET</span>, { expiresIn: <span class="str">'15m'</span> }
+  )
+  <span class="cm">// REFRESH TOKEN — 7 days</span>
+  <span class="kw">const</span> <span class="var">refreshToken</span> = <span class="var">jwt</span>.<span class="fn">sign</span>(
+    { userId: <span class="var">user</span>.<span class="prop">_id</span> },
+    <span class="var">process</span>.<span class="prop">env</span>.<span class="prop">JWT_REFRESH_SECRET</span>, { expiresIn: <span class="str">'7d'</span> }
+  )
+
+  <span class="cm">// Save refresh token in MongoDB</span>
+  <span class="var">user</span>.<span class="prop">refresh_token</span> = <span class="var">refreshToken</span>
+  <span class="var">user</span>.<span class="prop">last_login</span> = <span class="kw">new</span> <span class="cls">Date</span>()
+  <span class="kw">await</span> <span class="var">user</span>.<span class="fn">save</span>()
+
+  <span class="cm">// SET COOKIE — HTTP-only, JS cannot read this</span>
+  <span class="var">res</span>.<span class="fn">cookie</span>(<span class="str">'refreshToken'</span>, <span class="var">refreshToken</span>, {
+    httpOnly: <span class="num">true</span>, secure: <span class="num">true</span>, sameSite: <span class="str">'strict'</span>,
+    maxAge: <span class="num">7</span> * <span class="num">24</span> * <span class="num">60</span> * <span class="num">60</span> * <span class="num">1000</span>
+  })
+
+  <span class="cm">// Return access token + user info to React</span>
+  <span class="var">res</span>.<span class="fn">json</span>({
+    accessToken,
+    user: {
+      id: <span class="var">user</span>.<span class="prop">_id</span>, name: <span class="var">user</span>.<span class="prop">name</span>,
+      email: <span class="var">user</span>.<span class="prop">email</span>,
+      profile_complete: <span class="var">user</span>.<span class="prop">profile_complete</span>
+    }
+  })
+}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="ic">
+          <div class="ic-title">Redux authSlice — what React stores</div>
+          <div class="code" style="margin-top:6px">
+            <div class="code-bar"><span class="code-lang">js</span><span class="code-file">store/authSlice.js</span></div>
+            <div class="code-body"><span class="cm">// On successful login dispatch(setAuth(data))</span>
+<span class="kw">const</span> <span class="var">authSlice</span> = <span class="fn">createSlice</span>({
+  name: <span class="str">'auth'</span>,
+  initialState: {
+    token: <span class="num">null</span>,  <span class="cm">// access token in memory</span>
+    user: <span class="num">null</span>    <span class="cm">// name, email, profile_complete</span>
+  },
+  reducers: {
+    <span class="fn">setAuth</span>: (<span class="var">state</span>, { <span class="var">payload</span> }) => {
+      <span class="var">state</span>.<span class="prop">token</span> = <span class="var">payload</span>.<span class="prop">accessToken</span>
+      <span class="var">state</span>.<span class="prop">user</span>  = <span class="var">payload</span>.<span class="prop">user</span>
+    },
+    <span class="fn">clearAuth</span>: (<span class="var">state</span>) => {
+      <span class="var">state</span>.<span class="prop">token</span> = <span class="num">null</span>
+      <span class="var">state</span>.<span class="prop">user</span>  = <span class="num">null</span>
+    }
+  }
+})</div>
+          </div>
+        </div>
+        <div class="ic">
+          <div class="ic-title">Axios interceptor — silent token refresh</div>
+          <div class="ic-body">When any API call returns 401 (expired), the Axios interceptor automatically calls POST /auth/refresh (which reads the cookie), gets a new access token, updates Redux, then retries the original request. User never sees an error or a login screen.</div>
+        </div>
+        <div class="hl hl-green"><b>After login:</b> React checks <code class="ic">user.profile_complete</code>. If false → navigate('/profile-setup'). If true → navigate('/dashboard'). This is the critical branch that matches the flowchart.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PHASE 3 — PROFILE SETUP
+═══════════════════════════════════════════ -->
+<div id="p3" style="margin-top:40px">
+<div class="phase-hdr phase-3">
+  <span class="phase-num n3">PHASE 03</span>
+  <span class="phase-label">Profile Setup — 4-Step Wizard → MongoDB user_profiles</span>
+  <span class="phase-tag">ProfileSetupPage.jsx · userProfile.js model</span>
+</div>
+
+<div class="step">
+  <div class="step-hdr">
+    <span class="step-n">3.1</span>
+    <div class="step-info">
+      <div class="step-title">user_profiles MongoDB Schema — Full Structure</div>
+      <div class="step-desc">One document per user per financial year. This is the central document that every other feature reads from. All sub-documents are nested inside.</div>
+    </div>
+  </div>
+  <div class="step-body">
+    <div class="schema"><span class="cm">// models/UserProfile.js — user_profiles collection</span>
+
+{
+  <span class="prop">user_id</span>:           ObjectId, <span class="cm">// ref → users._id (indexed)</span>
+  <span class="prop">financial_year</span>:    <span class="str">"2024-25"</span>,
+
+  <span class="cm">// ── STEP 1: PERSONAL DETAILS ──────────────────────────────────────</span>
+  <span class="prop">personal</span>: {
+    <span class="prop">age</span>:             <span class="num">28</span>,
+    <span class="prop">date_of_birth</span>:   ISODate,
+    <span class="prop">city_type</span>:       <span class="str">"metro"</span>,       <span class="cm">// "metro" | "non_metro"</span>
+    <span class="prop">city_name</span>:       <span class="str">"Mumbai"</span>,
+    <span class="prop">employer_name</span>:   <span class="str">"Infosys Ltd"</span>,
+    <span class="prop">pan_encrypted</span>:  <span class="str">"AES256..."</span>,   <span class="cm">// never store plain PAN</span>
+    <span class="prop">risk_tolerance</span>: <span class="str">"medium"</span>,     <span class="cm">// "low" | "medium" | "high"</span>
+  },
+
+  <span class="cm">// ── STEP 2: SALARY (from OCR or manual) ──────────────────────────</span>
+  <span class="prop">salary</span>: {
+    <span class="prop">gross_annual</span>:        <span class="num">1000000</span>,
+    <span class="prop">basic_annual</span>:        <span class="num">400000</span>,
+    <span class="prop">hra_received_annual</span>: <span class="num">200000</span>,
+    <span class="prop">special_allowance</span>:   <span class="num">280000</span>,
+    <span class="prop">employer_pf_annual</span>:  <span class="num">48000</span>,  <span class="cm">// 12% of basic</span>
+    <span class="prop">employee_pf_annual</span>:  <span class="num">48000</span>,  <span class="cm">// 12% of basic (qualifies for 80C)</span>
+    <span class="prop">slip_s3_url</span>:         <span class="str">"s3://..."</span>,
+    <span class="prop">ocr_raw</span>:             { ... }, <span class="cm">// store raw OCR for audit</span>
+  },
+
+  <span class="cm">// ── STEP 3: DEDUCTIONS ──────────────────────────────────────────</span>
+  <span class="prop">deductions</span>: {
+    <span class="cm">// 80C components — sum is capped at ₹1,50,000</span>
+    <span class="prop">lic_premium</span>:      <span class="num">0</span>,
+    <span class="prop">ppf_contribution</span>: <span class="num">0</span>,
+    <span class="prop">elss_investment</span>:  <span class="num">0</span>,
+    <span class="prop">nsc_investment</span>:   <span class="num">0</span>,
+    <span class="prop">tax_saver_fd</span>:     <span class="num">0</span>,
+    <span class="prop">sukanya</span>:          <span class="num">0</span>,
+    <span class="prop">tuition_fee</span>:      <span class="num">0</span>,
+    <span class="prop">home_loan_principal</span>: <span class="num">0</span>,
+    <span class="prop">total_80c</span>:        <span class="num">0</span>,  <span class="cm">// CALCULATED on save — Math.min(sum, 150000)</span>
+    <span class="cm">// 80D</span>
+    <span class="prop">insurance_self</span>:    <span class="num">0</span>,
+    <span class="prop">insurance_parents</span>: <span class="num">0</span>,
+    <span class="cm">// Others</span>
+    <span class="prop">nps_contribution</span>:  <span class="num">0</span>,  <span class="cm">// 80CCD(1B) — separate from 80C</span>
+    <span class="prop">home_loan_interest</span>:<span class="num">0</span>,  <span class="cm">// Section 24 — max ₹2,00,000</span>
+    <span class="prop">edu_loan_interest</span>: <span class="num">0</span>,  <span class="cm">// 80E — no cap</span>
+    <span class="prop">donations_80g</span>:     <span class="num">0</span>,
+    <span class="prop">rent_monthly</span>:      <span class="num">15000</span>,
+    <span class="prop">is_rented</span>:         <span class="num">true</span>,
+  },
+
+  <span class="cm">// ── STEP 4: LIFE EVENTS ─────────────────────────────────────────</span>
+  <span class="prop">life_events</span>: {
+    <span class="prop">is_married</span>:       <span class="num">false</span>,
+    <span class="prop">has_children</span>:     <span class="num">false</span>,
+    <span class="prop">has_girl_child</span>:   <span class="num">false</span>,
+    <span class="prop">parent_senior</span>:    <span class="num">false</span>, <span class="cm">// parent 60+ → 80D limit doubles</span>
+    <span class="prop">has_home_loan</span>:    <span class="num">false</span>,
+    <span class="prop">has_edu_loan</span>:     <span class="num">false</span>,
+  },
+
+  <span class="cm">// ── CALCULATED RESULTS (written by rule engine) ─────────────────</span>
+  <span class="prop">tax_result</span>: {
+    <span class="prop">hra_exemption</span>:      <span class="num">null</span>,
+    <span class="prop">tax_old_regime</span>:     <span class="num">null</span>,
+    <span class="prop">tax_new_regime</span>:     <span class="num">null</span>,
+    <span class="prop">recommended_regime</span>: <span class="num">null</span>,
+    <span class="prop">gap_80c</span>:            <span class="num">null</span>,
+    <span class="prop">gap_80d</span>:            <span class="num">null</span>,
+    <span class="prop">gap_nps</span>:            <span class="num">null</span>,
+    <span class="prop">potential_saving</span>:   <span class="num">null</span>,
+    <span class="prop">calculated_at</span>:      <span class="num">null</span>,
+  },
+
+  <span class="prop">onboarding_step</span>:   <span class="num">1</span>,   <span class="cm">// tracks which step user is on</span>
+  <span class="prop">created_at</span>:        ISODate,
+  <span class="prop">updated_at</span>:        ISODate
+}</div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-hdr">
+    <span class="step-n">3.2</span>
+    <div class="step-info">
+      <div class="step-title">4-Step Onboarding Wizard — How Each Step Saves to MongoDB</div>
+      <div class="step-desc">React keeps all 4 steps in local state. Final step submits everything in ONE API call. No intermediate saves — prevents partial profiles.</div>
+    </div>
+  </div>
+  <div class="step-body">
+    <div class="g4">
+      <div class="ic" style="border-color:rgba(0,217,126,0.2)">
+        <div class="ic-title" style="color:var(--green)">STEP 1</div>
+        <div class="ic-body"><b style="color:var(--txt)">Personal</b><br>Age, city type, employer name, risk tolerance, PAN (AES-256 encrypted before sending)</div>
+      </div>
+      <div class="ic" style="border-color:rgba(59,158,255,0.2)">
+        <div class="ic-title" style="color:var(--blue)">STEP 2</div>
+        <div class="ic-body"><b style="color:var(--txt)">Salary</b><br>Upload slip OR enter manually. OCR auto-fills. User reviews and corrects errors.</div>
+      </div>
+      <div class="ic" style="border-color:rgba(245,166,35,0.2)">
+        <div class="ic-title" style="color:var(--amber)">STEP 3</div>
+        <div class="ic-body"><b style="color:var(--txt)">Investments</b><br>All 80C amounts, 80D insurance, NPS, home loan, education loan, donations</div>
+      </div>
+      <div class="ic" style="border-color:rgba(155,127,255,0.2)">
+        <div class="ic-title" style="color:var(--purple)">STEP 4</div>
+        <div class="ic-body"><b style="color:var(--txt)">Life Events</b><br>Married? Children? Girl child? Parent 60+? Home loan? Education loan?</div>
+      </div>
+    </div>
+    <div class="code">
+      <div class="code-bar"><span class="code-lang">js</span><span class="code-file">controllers/profileController.js — createProfile</span></div>
+      <div class="code-body"><span class="kw">const</span> <span class="fn">createProfile</span> = <span class="kw">async</span> (<span class="var">req</span>, <span class="var">res</span>) => {
+  <span class="cm">// req.user.userId comes from authMiddleware (JWT decoded)</span>
+  <span class="kw">const</span> <span class="var">userId</span> = <span class="var">req</span>.<span class="prop">user</span>.<span class="prop">userId</span>
+
+  <span class="cm">// Prevent duplicate profile for same year</span>
+  <span class="kw">const</span> <span class="var">exists</span> = <span class="kw">await</span> <span class="cls">UserProfile</span>.<span class="fn">findOne</span>({
+    user_id: <span class="var">userId</span>, financial_year: <span class="str">'2024-25'</span>
+  })
+  <span class="kw">if</span> (<span class="var">exists</span>) <span class="kw">return</span> <span class="var">res</span>.<span class="fn">status</span>(<span class="num">409</span>).<span class="fn">json</span>({ error: <span class="str">'Profile already exists'</span> })
+
+  <span class="cm">// Encrypt PAN before storing</span>
+  <span class="var">req</span>.<span class="prop">body</span>.<span class="prop">personal</span>.<span class="prop">pan_encrypted</span> = <span class="fn">encryptAES</span>(<span class="var">req</span>.<span class="prop">body</span>.<span class="prop">personal</span>.<span class="prop">pan</span>)
+  <span class="kw">delete</span> <span class="var">req</span>.<span class="prop">body</span>.<span class="prop">personal</span>.<span class="prop">pan</span>  <span class="cm">// remove plain PAN immediately</span>
+
+  <span class="cm">// Auto-calculate total_80c with cap</span>
+  <span class="kw">const</span> <span class="var">d</span> = <span class="var">req</span>.<span class="prop">body</span>.<span class="prop">deductions</span>
+  <span class="var">d</span>.<span class="prop">total_80c</span> = <span class="cls">Math</span>.<span class="fn">min</span>(
+    <span class="var">d</span>.<span class="prop">lic_premium</span> + <span class="var">d</span>.<span class="prop">ppf_contribution</span> + <span class="var">d</span>.<span class="prop">elss_investment</span>
+    + <span class="var">d</span>.<span class="prop">nsc_investment</span> + <span class="var">d</span>.<span class="prop">tax_saver_fd</span> + <span class="var">d</span>.<span class="prop">sukanya</span>
+    + <span class="var">d</span>.<span class="prop">tuition_fee</span> + <span class="var">d</span>.<span class="prop">home_loan_principal</span>
+    + <span class="var">d</span>.<span class="prop">employee_pf_annual</span>,  <span class="cm">// PF counts in 80C</span>
+    <span class="num">150000</span>
+  )
+
+  <span class="kw">const</span> <span class="var">profile</span> = <span class="kw">await</span> <span class="cls">UserProfile</span>.<span class="fn">create</span>({
+    user_id: <span class="var">userId</span>, financial_year: <span class="str">'2024-25'</span>, ...<span class="var">req</span>.<span class="prop">body</span>
+  })
+
+  <span class="cm">// Mark user as profile_complete in users collection</span>
+  <span class="kw">await</span> <span class="cls">User</span>.<span class="fn">findByIdAndUpdate</span>(<span class="var">userId</span>, { profile_complete: <span class="num">true</span> })
+
+  <span class="cm">// Update Redux on frontend after this response</span>
+  <span class="var">res</span>.<span class="fn">status</span>(<span class="num">201</span>).<span class="fn">json</span>({ profile, message: <span class="str">'Profile created'</span> })
+  <span class="cm">// Frontend: dispatch(setProfileComplete(true)) → navigate('/dashboard')</span>
+}</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PHASE 4 — SALARY UPLOAD + OCR
+═══════════════════════════════════════════ -->
+<div id="p4" style="margin-top:40px">
+<div class="phase-hdr phase-4">
+  <span class="phase-num n4">PHASE 04</span>
+  <span class="phase-label">Salary Input — Upload Slip OR Manual Entry + OCR</span>
+  <span class="phase-tag">SalaryUploadPage.jsx · ocrController.js · salaryParser.js</span>
+</div>
+
+<div class="step">
+  <div class="step-hdr">
+    <span class="step-n">4.1</span>
+    <div class="step-info">
+      <div class="step-title">Salary Upload — Profile Check FIRST, then OCR Pipeline</div>
+      <div class="step-desc">When user clicks "Upload Salary Receipt" on Dashboard, ProtectedRoute's requireProfile guard already ensures profile exists. If somehow accessed directly, same guard redirects.</div>
+    </div>
+  </div>
+  <div class="step-body">
+    <div class="decision">User clicks Upload Salary Receipt → check profile_complete in Redux</div>
+    <div class="g2">
+      <div>
+        <div class="hl hl-red" style="margin-bottom:10px"><b>profile_complete = false</b><br>ProtectedRoute redirects to /profile-setup. After profile is saved → profile_complete = true → navigate to /salary-upload.</div>
+        <div class="hl hl-green"><b>profile_complete = true</b><br>Proceed to /salary-upload page. Show two options: "Upload Salary Slip (OCR)" or "Enter Manually".</div>
+      </div>
+      <div class="decision" style="flex-direction:column;align-items:flex-start;gap:8px">
+        <span>Salary Slip Upload?</span>
+        <div style="display:flex;gap:10px;font-size:11px;font-weight:400">
+          <span style="color:var(--green)">YES → OCR reads → auto-fill → user confirms</span>
+          <span style="color:var(--red)">NO → Manual form → user types all fields</span>
+        </div>
+        <div style="font-size:11px;font-weight:400;color:rgba(245,166,35,0.7)">Both paths lead to same endpoint: POST /api/salary/save</div>
+      </div>
+    </div>
+    <div class="code">
+      <div class="code-bar"><span class="code-lang">js</span><span class="code-file">controllers/ocrController.js — full OCR pipeline</span></div>
+      <div class="code-body"><span class="kw">const</span> <span class="fn">processSalarySlip</span> = <span class="kw">async</span> (<span class="var">req</span>, <span class="var">res</span>) => {
+  <span class="cm">// Multer has saved file to memory buffer (memoryStorage)</span>
+  <span class="kw">const</span> <span class="var">fileBuffer</span> = <span class="var">req</span>.<span class="prop">file</span>.<span class="prop">buffer</span>
+
+  <span class="cm">// STEP 1: Run Tesseract OCR on the image buffer</span>
+  <span class="kw">const</span> <span class="var">worker</span> = <span class="kw">await</span> <span class="fn">createWorker</span>(<span class="str">'eng'</span>)
+  <span class="kw">const</span> { <span class="var">data</span>: { <span class="var">text</span> } } = <span class="kw">await</span> <span class="var">worker</span>.<span class="fn">recognize</span>(<span class="var">fileBuffer</span>)
+  <span class="kw">await</span> <span class="var">worker</span>.<span class="fn">terminate</span>()
+
+  <span class="cm">// STEP 2: Parse the OCR text to extract salary fields</span>
+  <span class="kw">const</span> <span class="var">parsed</span> = <span class="fn">parseSalaryText</span>(<span class="var">text</span>)
+  <span class="cm">// e.g. { basic_monthly:33333, hra_monthly:16667, special:23333 }</span>
+
+  <span class="cm">// STEP 3: Annualize all values (×12)</span>
+  <span class="kw">const</span> <span class="var">annualized</span> = {
+    basic_annual:         <span class="var">parsed</span>.<span class="prop">basic_monthly</span>  * <span class="num">12</span>,
+    hra_received_annual:  <span class="var">parsed</span>.<span class="prop">hra_monthly</span>   * <span class="num">12</span>,
+    special_allowance:    <span class="var">parsed</span>.<span class="prop">special_monthly</span>* <span class="num">12</span>,
+    gross_annual:         <span class="var">parsed</span>.<span class="prop">gross_monthly</span> * <span class="num">12</span>,
+    employee_pf_annual:   <span class="var">parsed</span>.<span class="prop">pf_monthly</span>    * <span class="num">12</span>,
+  }
+
+  <span class="cm">// STEP 4: Upload original file to S3 for document record</span>
+  <span class="kw">const</span> <span class="var">s3Key</span> = <span class="str">`${req.user.userId}/salary-slips/${Date.now()}.pdf`</span>
+  <span class="kw">await</span> <span class="fn">uploadToS3</span>(<span class="var">fileBuffer</span>, <span class="var">s3Key</span>)
+
+  <span class="cm">// Return parsed fields to React — frontend fills the form</span>
+  <span class="var">res</span>.<span class="fn">json</span>({ parsed: <span class="var">annualized</span>, s3_key: <span class="var">s3Key</span>, raw_text: <span class="var">text</span> })
+  <span class="cm">// React: form.setValue('basic_annual', data.parsed.basic_annual)</span>
+}
+
+<span class="cm">// ── Regex parser ───────────────────────────────────────</span>
+<span class="kw">function</span> <span class="fn">parseSalaryText</span>(<span class="var">text</span>) {
+  <span class="kw">const</span> <span class="fn">get</span> = (<span class="var">pattern</span>) => {
+    <span class="kw">const</span> <span class="var">m</span> = <span class="var">text</span>.<span class="fn">match</span>(<span class="var">pattern</span>)
+    <span class="kw">return</span> <span class="var">m</span> ? <span class="fn">parseFloat</span>(<span class="var">m</span>[<span class="num">1</span>].<span class="fn">replace</span>(<span class="str">/[,₹]/g</span>, <span class="str">''</span>)) : <span class="num">0</span>
+  }
+  <span class="kw">return</span> {
+    basic_monthly:   <span class="fn">get</span>(<span class="str">/basic(?:\s+salary)?[\s:₹]+([\d,]+)/i</span>),
+    hra_monthly:     <span class="fn">get</span>(<span class="str">/hra|house\s*rent[\s:₹]+([\d,]+)/i</span>),
+    special_monthly: <span class="fn">get</span>(<span class="str">/special\s*allow[\s:₹]+([\d,]+)/i</span>),
+    gross_monthly:   <span class="fn">get</span>(<span class="str">/gross\s*(?:salary|pay|total)[\s:₹]+([\d,]+)/i</span>),
+    pf_monthly:      <span class="fn">get</span>(<span class="str">/(?:epf|pf)\s*(?:employee|deduction)[\s:₹]+([\d,]+)/i</span>),
+  }
+}</div>
+    </div>
+    <div class="code">
+      <div class="code-bar"><span class="code-lang">js</span><span class="code-file">controllers/salaryController.js — save confirmed salary</span></div>
+      <div class="code-body"><span class="cm">// Called when user confirms OCR values OR submits manual form</span>
+<span class="kw">const</span> <span class="fn">saveSalary</span> = <span class="kw">async</span> (<span class="var">req</span>, <span class="var">res</span>) => {
+  <span class="kw">const</span> { <span class="var">salary</span>, <span class="var">s3_key</span>, <span class="var">ocr_raw</span> } = <span class="var">req</span>.<span class="prop">body</span>
+
+  <span class="cm">// Update the salary sub-document in user_profiles</span>
+  <span class="kw">const</span> <span class="var">profile</span> = <span class="kw">await</span> <span class="cls">UserProfile</span>.<span class="fn">findOneAndUpdate</span>(
+    { user_id: <span class="var">req</span>.<span class="prop">user</span>.<span class="prop">userId</span>, financial_year: <span class="str">'2024-25'</span> },
+    { <span class="op">$set</span>: {
+      <span class="str">'salary'</span>: { ...<span class="var">salary</span>, slip_s3_url: <span class="var">s3_key</span>, ocr_raw: <span class="var">ocr_raw</span> },
+      updated_at: <span class="kw">new</span> <span class="cls">Date</span>()
+    }},
+    { <span class="kw">new</span>: <span class="num">true</span> }
+  )
+
+  <span class="cm">// Immediately recalculate PF contribution for 80C</span>
+  <span class="kw">const</span> <span class="var">empPF</span> = <span class="cls">Math</span>.<span class="fn">round</span>(<span class="var">salary</span>.<span class="prop">basic_annual</span> * <span class="num">0.12</span>)
+  <span class="kw">await</span> <span class="cls">UserProfile</span>.<span class="fn">findOneAndUpdate</span>(
+    { user_id: <span class="var">req</span>.<span class="prop">user</span>.<span class="prop">userId</span> },
+    { <span class="op">$set</span>: { <span class="str">'deductions.employee_pf_annual'</span>: <span class="var">empPF</span> } }
+  )
+
+  <span class="cm">// Auto-trigger rule engine calculation after salary save</span>
+  <span class="kw">const</span> <span class="var">taxResult</span> = <span class="fn">runTaxEngine</span>(<span class="var">profile</span>)
+  <span class="kw">await</span> <span class="cls">UserProfile</span>.<span class="fn">findOneAndUpdate</span>(
+    { user_id: <span class="var">req</span>.<span class="prop">user</span>.<span class="prop">userId</span> },
+    { <span class="op">$set</span>: { tax_result: <span class="var">taxResult</span> } }
+  )
+
+  <span class="var">res</span>.<span class="fn">json</span>({ profile, taxResult })
+  <span class="cm">// React navigates to /suggestions after this</span>
+}</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PHASE 5 — RULE ENGINE
+═══════════════════════════════════════════ -->
+<div id="p5" style="margin-top:40px">
+<div class="phase-hdr phase-5">
+  <span class="phase-num n5">PHASE 05</span>
+  <span class="phase-label">Rule Engine — Pure Tax Calculation (Old + New Regime)</span>
+  <span class="phase-tag">utils/taxEngine.js · Called by Node.js backend</span>
+</div>
+
+<div class="step">
+  <div class="step-hdr">
+    <span class="step-n">5.1</span>
+    <div class="step-info">
+      <div class="step-title">Full Tax Engine — HRA + All Deductions + Both Regimes + Gap Detection</div>
+      <div class="step-desc">100% deterministic pure functions. No ML here. Same inputs always give same result. This runs on every profile save and every calculate button click.</div>
+    </div>
+  </div>
+  <div class="step-body">
+    <div class="g2">
+      <div class="code">
+        <div class="code-bar"><span class="code-lang">js</span><span class="code-file">utils/taxEngine.js</span></div>
+        <div class="code-body"><span class="cm">// ── HRA: minimum of 3 formulas ──────────────</span>
+<span class="kw">function</span> <span class="fn">calcHRA</span>(<span class="var">p</span>) {
+  <span class="kw">if</span> (!<span class="var">p</span>.<span class="prop">deductions</span>.<span class="prop">is_rented</span>) <span class="kw">return</span> <span class="num">0</span>
+  <span class="kw">const</span> <span class="var">rent</span> = <span class="var">p</span>.<span class="prop">deductions</span>.<span class="prop">rent_monthly</span> * <span class="num">12</span>
+  <span class="kw">const</span> <span class="var">basic</span> = <span class="var">p</span>.<span class="prop">salary</span>.<span class="prop">basic_annual</span>
+  <span class="kw">const</span> <span class="var">hraRcvd</span> = <span class="var">p</span>.<span class="prop">salary</span>.<span class="prop">hra_received_annual</span>
+  <span class="kw">const</span> <span class="var">pct</span> = <span class="var">p</span>.<span class="prop">personal</span>.<span class="prop">city_type</span> === <span class="str">'metro'</span> ? <span class="num">0.50</span> : <span class="num">0.40</span>
+
+  <span class="kw">return</span> <span class="cls">Math</span>.<span class="fn">max</span>(<span class="num">0</span>, <span class="cls">Math</span>.<span class="fn">min</span>(
+    <span class="var">hraRcvd</span>,                       <span class="cm">// Formula 1</span>
+    <span class="var">rent</span> - (<span class="num">0.10</span> * <span class="var">basic</span>),         <span class="cm">// Formula 2</span>
+    <span class="var">pct</span> * <span class="var">basic</span>                     <span class="cm">// Formula 3</span>
+  ))
+}
+
+<span class="cm">// ── 80D limit (changes if parents are senior) ──</span>
+<span class="kw">function</span> <span class="fn">calc80D</span>(<span class="var">p</span>) {
+  <span class="kw">const</span> <span class="var">maxSelf</span>    = <span class="num">25000</span>
+  <span class="kw">const</span> <span class="var">maxParents</span> = <span class="var">p</span>.<span class="prop">life_events</span>.<span class="prop">parent_senior</span> ? <span class="num">50000</span> : <span class="num">25000</span>
+  <span class="kw">return</span> (
+    <span class="cls">Math</span>.<span class="fn">min</span>(<span class="var">p</span>.<span class="prop">deductions</span>.<span class="prop">insurance_self</span>,    <span class="var">maxSelf</span>) +
+    <span class="cls">Math</span>.<span class="fn">min</span>(<span class="var">p</span>.<span class="prop">deductions</span>.<span class="prop">insurance_parents</span>, <span class="var">maxParents</span>)
+  )
+}
+
+<span class="cm">// ── Old Regime tax slabs ─────────────────────</span>
+<span class="kw">function</span> <span class="fn">oldRegimeTax</span>(<span class="var">ti</span>) { <span class="cm">// ti = taxable income</span>
+  <span class="kw">let</span> <span class="var">t</span> = <span class="num">0</span>
+  <span class="kw">if</span>      (<span class="var">ti</span> <= <span class="num">250000</span>)  <span class="var">t</span> = <span class="num">0</span>
+  <span class="kw">else if</span> (<span class="var">ti</span> <= <span class="num">500000</span>)  <span class="var">t</span> = (<span class="var">ti</span>-<span class="num">250000</span>) * <span class="num">0.05</span>
+  <span class="kw">else if</span> (<span class="var">ti</span> <= <span class="num">1000000</span>) <span class="var">t</span> = <span class="num">12500</span>  + (<span class="var">ti</span>-<span class="num">500000</span>)  * <span class="num">0.20</span>
+  <span class="kw">else</span>                     <span class="var">t</span> = <span class="num">112500</span> + (<span class="var">ti</span>-<span class="num">1000000</span>) * <span class="num">0.30</span>
+  <span class="kw">return</span> <span class="cls">Math</span>.<span class="fn">round</span>(<span class="var">t</span> * <span class="num">1.04</span>) <span class="cm">// +4% cess</span>
+}
+
+<span class="cm">// ── New Regime tax slabs (FY 2024-25) ────────</span>
+<span class="kw">function</span> <span class="fn">newRegimeTax</span>(<span class="var">ti</span>) {
+  <span class="kw">let</span> <span class="var">t</span> = <span class="num">0</span>
+  <span class="kw">if</span>      (<span class="var">ti</span> <= <span class="num">300000</span>)  <span class="var">t</span> = <span class="num">0</span>
+  <span class="kw">else if</span> (<span class="var">ti</span> <= <span class="num">700000</span>)  <span class="var">t</span> = (<span class="var">ti</span>-<span class="num">300000</span>)  * <span class="num">0.05</span>
+  <span class="kw">else if</span> (<span class="var">ti</span> <= <span class="num">1000000</span>) <span class="var">t</span> = <span class="num">20000</span>  + (<span class="var">ti</span>-<span class="num">700000</span>)  * <span class="num">0.10</span>
+  <span class="kw">else if</span> (<span class="var">ti</span> <= <span class="num">1200000</span>) <span class="var">t</span> = <span class="num">50000</span>  + (<span class="var">ti</span>-<span class="num">1000000</span>) * <span class="num">0.15</span>
+  <span class="kw">else if</span> (<span class="var">ti</span> <= <span class="num">1500000</span>) <span class="var">t</span> = <span class="num">80000</span>  + (<span class="var">ti</span>-<span class="num">1200000</span>) * <span class="num">0.20</span>
+  <span class="kw">else</span>                     <span class="var">t</span> = <span class="num">140000</span> + (<span class="var">ti</span>-<span class="num">1500000</span>) * <span class="num">0.30</span>
+  <span class="kw">return</span> <span class="cls">Math</span>.<span class="fn">round</span>(<span class="var">t</span> * <span class="num">1.04</span>) <span class="cm">// +4% cess</span>
+}
+
+<span class="cm">// ── MAIN function — run this on every calculate ──</span>
+<span class="kw">function</span> <span class="fn">runTaxEngine</span>(<span class="var">profile</span>) {
+  <span class="kw">const</span> <span class="var">gross</span>    = <span class="var">profile</span>.<span class="prop">salary</span>.<span class="prop">gross_annual</span>
+  <span class="kw">const</span> <span class="var">hra</span>      = <span class="fn">calcHRA</span>(<span class="var">profile</span>)
+  <span class="kw">const</span> <span class="var">c80</span>      = <span class="var">profile</span>.<span class="prop">deductions</span>.<span class="prop">total_80c</span>       <span class="cm">// already capped at 1.5L</span>
+  <span class="kw">const</span> <span class="var">d80d</span>     = <span class="fn">calc80D</span>(<span class="var">profile</span>)
+  <span class="kw">const</span> <span class="var">nps</span>      = <span class="cls">Math</span>.<span class="fn">min</span>(<span class="var">profile</span>.<span class="prop">deductions</span>.<span class="prop">nps_contribution</span>, <span class="num">50000</span>)
+  <span class="kw">const</span> <span class="var">s24</span>      = <span class="cls">Math</span>.<span class="fn">min</span>(<span class="var">profile</span>.<span class="prop">deductions</span>.<span class="prop">home_loan_interest</span>, <span class="num">200000</span>)
+  <span class="kw">const</span> <span class="var">edu</span>      = <span class="var">profile</span>.<span class="prop">deductions</span>.<span class="prop">edu_loan_interest</span>  <span class="cm">// no cap</span>
+  <span class="kw">const</span> <span class="var">donations</span>= <span class="var">profile</span>.<span class="prop">deductions</span>.<span class="prop">donations_80g</span> * <span class="num">0.5</span>  <span class="cm">// 50% deductible</span>
+  <span class="kw">const</span> <span class="var">stdOld</span>   = <span class="num">50000</span>
+  <span class="kw">const</span> <span class="var">stdNew</span>   = <span class="num">75000</span>
+
+  <span class="kw">const</span> <span class="var">totalDeductionsOld</span> = <span class="var">c80</span>+<span class="var">d80d</span>+<span class="var">hra</span>+<span class="var">nps</span>+<span class="var">s24</span>+<span class="var">edu</span>+<span class="var">donations</span>+<span class="var">stdOld</span>
+  <span class="kw">const</span> <span class="var">taxableOld</span>         = <span class="cls">Math</span>.<span class="fn">max</span>(<span class="num">0</span>, <span class="var">gross</span> - <span class="var">totalDeductionsOld</span>)
+  <span class="kw">const</span> <span class="var">taxableNew</span>         = <span class="cls">Math</span>.<span class="fn">max</span>(<span class="num">0</span>, <span class="var">gross</span> - <span class="var">stdNew</span>)
+
+  <span class="kw">const</span> <span class="var">taxOld</span> = <span class="fn">oldRegimeTax</span>(<span class="var">taxableOld</span>)
+  <span class="kw">const</span> <span class="var">taxNew</span> = <span class="fn">newRegimeTax</span>(<span class="var">taxableNew</span>)
+
+  <span class="cm">// 80D limit depends on life events</span>
+  <span class="kw">const</span> <span class="var">max80d</span> = <span class="num">25000</span> + (<span class="var">profile</span>.<span class="prop">life_events</span>.<span class="prop">parent_senior</span> ? <span class="num">50000</span> : <span class="num">25000</span>)
+
+  <span class="kw">return</span> {
+    hra_exemption:       <span class="var">hra</span>,
+    tax_old_regime:      <span class="var">taxOld</span>,
+    tax_new_regime:      <span class="var">taxNew</span>,
+    recommended_regime:  <span class="var">taxOld</span> <= <span class="var">taxNew</span> ? <span class="str">'old'</span> : <span class="str">'new'</span>,
+    gap_80c:  <span class="cls">Math</span>.<span class="fn">max</span>(<span class="num">0</span>, <span class="num">150000</span> - <span class="var">c80</span>),
+    gap_80d:  <span class="cls">Math</span>.<span class="fn">max</span>(<span class="num">0</span>, <span class="var">max80d</span> - <span class="var">d80d</span>),
+    gap_nps:  <span class="cls">Math</span>.<span class="fn">max</span>(<span class="num">0</span>, <span class="num">50000</span> - <span class="var">nps</span>),
+    potential_saving: <span class="cls">Math</span>.<span class="fn">abs</span>(<span class="var">taxNew</span> - <span class="var">taxOld</span>),
+    calculated_at: <span class="kw">new</span> <span class="cls">Date</span>()
+  }
+}
+
+<span class="kw">module</span>.<span class="prop">exports</span> = { <span class="fn">runTaxEngine</span>, <span class="fn">calcHRA</span>, <span class="fn">calc80D</span> }</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div class="hl hl-gold"><b>This function returns the gaps (gap_80c, gap_80d, gap_nps) which become the MOST IMPORTANT input features for the ML model in Phase 6.</b></div>
+        <div class="ic">
+          <div class="ic-title">Where runTaxEngine is called</div>
+          <ul class="bl">
+            <li>After salary is saved — auto-calculate immediately</li>
+            <li>When user updates any deduction field</li>
+            <li>When a life event is logged</li>
+            <li>When user clicks "Recalculate" on dashboard</li>
+            <li>Result always stored in user_profiles.tax_result</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PHASE 6 — ML MODEL
+═══════════════════════════════════════════ -->
+<div id="p6" style="margin-top:40px">
+<div class="phase-hdr phase-6">
+  <span class="phase-num n6">PHASE 06</span>
+  <span class="phase-label">ML Model — Synthetic Data → Train → Flask API → Investment Suggestions</span>
+  <span class="phase-tag">generate_data.py · train_model.py · app.py</span>
+</div>
+
+<div class="step">
+  <div class="step-hdr">
+    <span class="step-n">6.1</span>
+    <div class="step-info">
+      <div class="step-title">Generate 10,000 Synthetic Profiles → Apply Rule Engine → Get Labels</div>
+      <div class="step-desc">No real user data exists. Generate synthetic profiles with Python random. Apply the same rule engine logic to label each row. Save as CSV. This is your training dataset.</div>
+    </div>
+  </div>
+  <div class="step-body">
+    <div class="g2">
+      <div class="code">
+        <div class="code-bar"><span class="code-lang">python</span><span class="code-file">ml-service/generate_data.py</span></div>
+        <div class="code-body"><span class="kw">import</span> <span class="var">pandas</span> <span class="kw">as</span> <span class="var">pd</span>, <span class="var">numpy</span> <span class="kw">as</span> <span class="var">np</span>
+
+<span class="kw">def</span> <span class="fn">generate_profiles</span>(<span class="var">n</span>=<span class="num">10000</span>):
+  <span class="var">np</span>.<span class="fn">random</span>.<span class="fn">seed</span>(<span class="num">42</span>)
+  <span class="var">df</span> = <span class="var">pd</span>.<span class="cls">DataFrame</span>({
+    <span class="str">'salary'</span>:     <span class="var">np</span>.<span class="fn">random</span>.<span class="fn">randint</span>(<span class="num">300000</span>, <span class="num">3500001</span>, <span class="var">n</span>),
+    <span class="str">'age'</span>:        <span class="var">np</span>.<span class="fn">random</span>.<span class="fn">randint</span>(<span class="num">22</span>, <span class="num">59</span>, <span class="var">n</span>),
+    <span class="str">'city_type'</span>:  <span class="var">np</span>.<span class="fn">random</span>.<span class="fn">randint</span>(<span class="num">0</span>, <span class="num">2</span>, <span class="var">n</span>),  <span class="cm"># 0=non-metro 1=metro</span>
+    <span class="str">'existing_80c'</span>:<span class="var">np</span>.<span class="fn">random</span>.<span class="fn">randint</span>(<span class="num">0</span>, <span class="num">150001</span>, <span class="var">n</span>),
+    <span class="str">'has_insurance'</span>:<span class="var">np</span>.<span class="fn">random</span>.<span class="fn">randint</span>(<span class="num">0</span>, <span class="num">2</span>, <span class="var">n</span>),
+    <span class="str">'insurance_amt'</span>:<span class="var">np</span>.<span class="fn">random</span>.<span class="fn">randint</span>(<span class="num">0</span>, <span class="num">25001</span>, <span class="var">n</span>),
+    <span class="str">'nps_invested'</span>:<span class="var">np</span>.<span class="fn">random</span>.<span class="fn">randint</span>(<span class="num">0</span>, <span class="num">50001</span>, <span class="var">n</span>),
+    <span class="str">'is_rented'</span>:  <span class="var">np</span>.<span class="fn">random</span>.<span class="fn">randint</span>(<span class="num">0</span>, <span class="num">2</span>, <span class="var">n</span>),
+    <span class="str">'has_home_loan'</span>:<span class="var">np</span>.<span class="fn">random</span>.<span class="fn">randint</span>(<span class="num">0</span>, <span class="num">2</span>, <span class="var">n</span>),
+    <span class="str">'risk_score'</span>: <span class="var">np</span>.<span class="fn">random</span>.<span class="fn">randint</span>(<span class="num">1</span>, <span class="num">4</span>, <span class="var">n</span>),  <span class="cm"># 1=low 2=med 3=high</span>
+    <span class="str">'parent_senior'</span>:<span class="var">np</span>.<span class="fn">random</span>.<span class="fn">randint</span>(<span class="num">0</span>, <span class="num">2</span>, <span class="var">n</span>),
+    <span class="str">'has_girl_child'</span>:<span class="var">np</span>.<span class="fn">random</span>.<span class="fn">randint</span>(<span class="num">0</span>, <span class="num">2</span>, <span class="var">n</span>),
+  })
+
+  <span class="cm"># Derived features</span>
+  <span class="var">df</span>[<span class="str">'yrs_to_retire'</span>] = <span class="num">60</span> - <span class="var">df</span>[<span class="str">'age'</span>]
+  <span class="var">df</span>[<span class="str">'gap_80c'</span>] = (<span class="num">150000</span> - <span class="var">df</span>[<span class="str">'existing_80c'</span>]).<span class="fn">clip</span>(<span class="num">0</span>)
+  <span class="var">df</span>[<span class="str">'gap_nps'</span>]  = (<span class="num">50000</span>  - <span class="var">df</span>[<span class="str">'nps_invested'</span>]).<span class="fn">clip</span>(<span class="num">0</span>)
+
+  <span class="cm"># ── LABELS (correct answers, generated by rules) ──</span>
+  <span class="var">df</span>[<span class="str">'suggest_80c'</span>] = (<span class="var">df</span>[<span class="str">'gap_80c'</span>] > <span class="num">0</span>).<span class="fn">astype</span>(<span class="fn">int</span>)
+  <span class="var">df</span>[<span class="str">'suggest_80d'</span>] = (<span class="var">df</span>[<span class="str">'has_insurance'</span>] == <span class="num">0</span>).<span class="fn">astype</span>(<span class="fn">int</span>)
+  <span class="var">df</span>[<span class="str">'suggest_nps'</span>] = (<span class="var">df</span>[<span class="str">'gap_nps'</span>] > <span class="num">0</span>).<span class="fn">astype</span>(<span class="fn">int</span>)
+
+  <span class="cm"># Best 80C instrument based on age + risk + life events</span>
+  <span class="kw">def</span> <span class="fn">best_instrument</span>(<span class="var">row</span>):
+    <span class="kw">if</span> <span class="var">row</span>[<span class="str">'has_girl_child'</span>]:      <span class="kw">return</span> <span class="str">'SSY'</span>
+    <span class="kw">if</span> <span class="var">row</span>[<span class="str">'age'</span>] < <span class="num">35</span> <span class="kw">and</span> <span class="var">row</span>[<span class="str">'risk_score'</span>] >= <span class="num">2</span>: <span class="kw">return</span> <span class="str">'ELSS'</span>
+    <span class="kw">if</span> <span class="var">row</span>[<span class="str">'age'</span>] < <span class="num">50</span>:           <span class="kw">return</span> <span class="str">'PPF'</span>
+    <span class="kw">return</span> <span class="str">'NSC'</span>
+
+  <span class="var">df</span>[<span class="str">'best_instrument'</span>] = <span class="var">df</span>.<span class="fn">apply</span>(<span class="var">best_instrument</span>, axis=<span class="num">1</span>)
+  <span class="var">df</span>.<span class="fn">to_csv</span>(<span class="str">'training_data.csv'</span>, index=<span class="num">False</span>)
+  <span class="kw">print</span>(<span class="str">f"Generated {len(df)} profiles"</span>)
+
+<span class="fn">generate_profiles</span>()</div>
+      </div>
+      <div class="code">
+        <div class="code-bar"><span class="code-lang">python</span><span class="code-file">ml-service/train_model.py</span></div>
+        <div class="code-body"><span class="kw">from</span> <span class="var">sklearn</span>.<span class="var">ensemble</span> <span class="kw">import</span> <span class="cls">RandomForestClassifier</span>
+<span class="kw">from</span> <span class="var">sklearn</span>.<span class="var">multioutput</span> <span class="kw">import</span> <span class="cls">MultiOutputClassifier</span>
+<span class="kw">from</span> <span class="var">sklearn</span>.<span class="var">preprocessing</span> <span class="kw">import</span> <span class="cls">StandardScaler</span>, <span class="cls">LabelEncoder</span>
+<span class="kw">from</span> <span class="var">sklearn</span>.<span class="var">model_selection</span> <span class="kw">import</span> <span class="fn">train_test_split</span>
+<span class="kw">from</span> <span class="var">sklearn</span>.<span class="var">metrics</span> <span class="kw">import</span> <span class="fn">accuracy_score</span>, <span class="fn">classification_report</span>
+<span class="kw">import</span> <span class="var">joblib</span>, <span class="var">pandas</span> <span class="kw">as</span> <span class="var">pd</span>
+
+<span class="var">df</span> = <span class="var">pd</span>.<span class="fn">read_csv</span>(<span class="str">'training_data.csv'</span>)
+
+<span class="cm"># Input features (what the model learns from)</span>
+<span class="var">FEATURES</span> = [<span class="str">'salary'</span>, <span class="str">'age'</span>, <span class="str">'gap_80c'</span>, <span class="str">'gap_80d'</span>,
+             <span class="str">'gap_nps'</span>, <span class="str">'city_type'</span>, <span class="str">'is_rented'</span>,
+             <span class="str">'has_home_loan'</span>, <span class="str">'risk_score'</span>, <span class="str">'yrs_to_retire'</span>]
+<span class="cm"># Output labels (what the model predicts)</span>
+<span class="var">TARGETS</span>  = [<span class="str">'suggest_80c'</span>, <span class="str">'suggest_80d'</span>, <span class="str">'suggest_nps'</span>]
+
+<span class="var">X</span> = <span class="var">df</span>[<span class="var">FEATURES</span>]
+<span class="var">y</span> = <span class="var">df</span>[<span class="var">TARGETS</span>]
+
+<span class="cm"># Encode best_instrument separately</span>
+<span class="var">le</span> = <span class="cls">LabelEncoder</span>()
+<span class="var">y_instrument</span> = <span class="var">le</span>.<span class="fn">fit_transform</span>(<span class="var">df</span>[<span class="str">'best_instrument'</span>])
+
+<span class="cm"># Normalize features</span>
+<span class="var">scaler</span> = <span class="cls">StandardScaler</span>()
+<span class="var">X_scaled</span> = <span class="var">scaler</span>.<span class="fn">fit_transform</span>(<span class="var">X</span>)
+
+<span class="var">X_tr</span>, <span class="var">X_te</span>, <span class="var">y_tr</span>, <span class="var">y_te</span> = <span class="fn">train_test_split</span>(
+  <span class="var">X_scaled</span>, <span class="var">y</span>, test_size=<span class="num">0.20</span>, random_state=<span class="num">42</span>
+)
+
+<span class="cm"># Train multi-output classifier</span>
+<span class="var">rfc</span> = <span class="cls">RandomForestClassifier</span>(
+  n_estimators=<span class="num">200</span>, random_state=<span class="num">42</span>, n_jobs=-<span class="num">1</span>
+)
+<span class="var">model</span> = <span class="cls">MultiOutputClassifier</span>(<span class="var">rfc</span>)
+<span class="var">model</span>.<span class="fn">fit</span>(<span class="var">X_tr</span>, <span class="var">y_tr</span>)
+
+<span class="cm"># Evaluate</span>
+<span class="var">preds</span> = <span class="var">model</span>.<span class="fn">predict</span>(<span class="var">X_te</span>)
+<span class="kw">print</span>(<span class="fn">classification_report</span>(<span class="var">y_te</span>, <span class="var">preds</span>))  <span class="cm"># target >88%</span>
+
+<span class="cm"># Save all 3 files — loaded by Flask at startup</span>
+<span class="var">joblib</span>.<span class="fn">dump</span>(<span class="var">model</span>,   <span class="str">'models/taxwise_model.pkl'</span>)
+<span class="var">joblib</span>.<span class="fn">dump</span>(<span class="var">scaler</span>,  <span class="str">'models/feature_scaler.pkl'</span>)
+<span class="var">joblib</span>.<span class="fn">dump</span>(<span class="var">le</span>,      <span class="str">'models/label_encoder.pkl'</span>)</div>
+      </div>
+    </div>
+    <div class="code" style="margin-top:10px">
+      <div class="code-bar"><span class="code-lang">python</span><span class="code-file">ml-service/app.py — Flask prediction endpoint</span></div>
+      <div class="code-body"><span class="kw">from</span> <span class="var">flask</span> <span class="kw">import</span> <span class="cls">Flask</span>, <span class="fn">request</span>, <span class="fn">jsonify</span>
+<span class="kw">import</span> <span class="var">joblib</span>, <span class="var">numpy</span> <span class="kw">as</span> <span class="var">np</span>
+
+<span class="var">app</span> = <span class="cls">Flask</span>(<span class="fn">__name__</span>)
+
+<span class="cm"># Load ONCE at startup — not on every request</span>
+<span class="var">MODEL</span>  = <span class="var">joblib</span>.<span class="fn">load</span>(<span class="str">'models/taxwise_model.pkl'</span>)
+<span class="var">SCALER</span> = <span class="var">joblib</span>.<span class="fn">load</span>(<span class="str">'models/feature_scaler.pkl'</span>)
+<span class="var">LE</span>     = <span class="var">joblib</span>.<span class="fn">load</span>(<span class="str">'models/label_encoder.pkl'</span>)
+
+<span class="cls">@app</span>.<span class="fn">route</span>(<span class="str">'/predict'</span>, methods=[<span class="str">'POST'</span>])
+<span class="kw">def</span> <span class="fn">predict</span>():
+  <span class="var">d</span> = <span class="fn">request</span>.<span class="fn">get_json</span>()
+
+  <span class="cm"># Build feature array — same order as training</span>
+  <span class="var">feat</span> = <span class="var">np</span>.<span class="fn">array</span>([[
+    <span class="var">d</span>[<span class="str">'salary'</span>], <span class="var">d</span>[<span class="str">'age'</span>], <span class="var">d</span>[<span class="str">'gap_80c'</span>],
+    <span class="var">d</span>[<span class="str">'gap_80d'</span>], <span class="var">d</span>[<span class="str">'gap_nps'</span>],
+    <span class="num">1</span> <span class="kw">if</span> <span class="var">d</span>[<span class="str">'city_type'</span>]==<span class="str">'metro'</span> <span class="kw">else</span> <span class="num">0</span>,
+    <span class="fn">int</span>(<span class="var">d</span>[<span class="str">'is_rented'</span>]),
+    <span class="fn">int</span>(<span class="var">d</span>[<span class="str">'has_home_loan'</span>]),
+    {<span class="str">'low'</span>:<span class="num">1</span>,<span class="str">'medium'</span>:<span class="num">2</span>,<span class="str">'high'</span>:<span class="num">3</span>}[<span class="var">d</span>[<span class="str">'risk_tolerance'</span>]],
+    <span class="num">60</span> - <span class="var">d</span>[<span class="str">'age'</span>]  <span class="cm"># years to retirement</span>
+  ]])
+
+  <span class="var">feat_scaled</span> = <span class="var">SCALER</span>.<span class="fn">transform</span>(<span class="var">feat</span>)
+  <span class="var">preds</span>       = <span class="var">MODEL</span>.<span class="fn">predict</span>(<span class="var">feat_scaled</span>)[<span class="num">0</span>]
+
+  <span class="kw">return</span> <span class="fn">jsonify</span>({
+    <span class="str">'suggest_80c'</span>: <span class="fn">bool</span>(<span class="var">preds</span>[<span class="num">0</span>]),
+    <span class="str">'suggest_80d'</span>: <span class="fn">bool</span>(<span class="var">preds</span>[<span class="num">1</span>]),
+    <span class="str">'suggest_nps'</span>: <span class="fn">bool</span>(<span class="var">preds</span>[<span class="num">2</span>]),
+    <span class="str">'best_instrument'</span>: <span class="fn">get_instrument</span>(<span class="var">d</span>), <span class="cm"># rule-based</span>
+    <span class="str">'priority_order'</span>:  <span class="fn">rank_by_saving</span>(<span class="var">d</span>),  <span class="cm"># sorted by ₹ saved</span>
+  })</div>
+    </div>
+  </div>
+</div>
+
+<div class="step">
+  <div class="step-hdr">
+    <span class="step-n">6.2</span>
+    <div class="step-info">
+      <div class="step-title">Node.js Calls Flask → Merges with Rule Engine → Final Suggestion</div>
+      <div class="step-desc">The suggestions API endpoint in Express runs BOTH the rule engine and the ML model, then merges their outputs into one unified suggestion object saved to MongoDB.</div>
+    </div>
+  </div>
+  <div class="step-body">
+    <div class="code">
+      <div class="code-bar"><span class="code-lang">js</span><span class="code-file">controllers/suggestionController.js — POST /api/suggestions/calculate</span></div>
+      <div class="code-body"><span class="kw">const</span> <span class="fn">calculate</span> = <span class="kw">async</span> (<span class="var">req</span>, <span class="var">res</span>) => {
+  <span class="cm">// 1. Get user's profile from MongoDB</span>
+  <span class="kw">const</span> <span class="var">profile</span> = <span class="kw">await</span> <span class="cls">UserProfile</span>.<span class="fn">findOne</span>({
+    user_id: <span class="var">req</span>.<span class="prop">user</span>.<span class="prop">userId</span>, financial_year: <span class="str">'2024-25'</span>
+  })
+
+  <span class="cm">// 2. Run rule engine — gets exact rupee gaps + tax amounts</span>
+  <span class="kw">const</span> <span class="var">ruleResult</span> = <span class="fn">runTaxEngine</span>(<span class="var">profile</span>)
+
+  <span class="cm">// 3. Build payload for Flask ML service</span>
+  <span class="kw">const</span> <span class="var">mlPayload</span> = {
+    salary:       <span class="var">profile</span>.<span class="prop">salary</span>.<span class="prop">gross_annual</span>,
+    age:          <span class="var">profile</span>.<span class="prop">personal</span>.<span class="prop">age</span>,
+    gap_80c:      <span class="var">ruleResult</span>.<span class="prop">gap_80c</span>,
+    gap_80d:      <span class="var">ruleResult</span>.<span class="prop">gap_80d</span>,
+    gap_nps:      <span class="var">ruleResult</span>.<span class="prop">gap_nps</span>,
+    city_type:    <span class="var">profile</span>.<span class="prop">personal</span>.<span class="prop">city_type</span>,
+    is_rented:    <span class="var">profile</span>.<span class="prop">deductions</span>.<span class="prop">is_rented</span>,
+    has_home_loan:<span class="var">profile</span>.<span class="prop">life_events</span>.<span class="prop">has_home_loan</span>,
+    risk_tolerance:<span class="var">profile</span>.<span class="prop">personal</span>.<span class="prop">risk_tolerance</span>,
+  }
+
+  <span class="cm">// 4. Call Python Flask ML service</span>
+  <span class="kw">const</span> { <span class="var">data</span>: <span class="var">mlResult</span> } = <span class="kw">await</span> <span class="var">axios</span>.<span class="fn">post</span>(
+    <span class="str">`${process.env.ML_SERVICE_URL}/predict`</span>, <span class="var">mlPayload</span>
+  )
+
+  <span class="cm">// 5. Merge rule engine (numbers) + ML (priorities)</span>
+  <span class="kw">const</span> <span class="var">suggestion</span> = {
+    ...<span class="var">ruleResult</span>,
+    ml_suggestions: <span class="var">mlResult</span>,
+    <span class="cm">// Build human-readable action items</span>
+    action_items: <span class="fn">buildActionItems</span>(<span class="var">ruleResult</span>, <span class="var">mlResult</span>),
+  }
+
+  <span class="cm">// 6. Save to ml_suggestions collection</span>
+  <span class="kw">await</span> <span class="cls">MLSuggestion</span>.<span class="fn">create</span>({
+    user_id: <span class="var">req</span>.<span class="prop">user</span>.<span class="prop">userId</span>,
+    financial_year: <span class="str">'2024-25'</span>,
+    suggestion, created_at: <span class="kw">new</span> <span class="cls">Date</span>()
+  })
+
+  <span class="cm">// 7. Also update tax_result in user_profiles</span>
+  <span class="kw">await</span> <span class="cls">UserProfile</span>.<span class="fn">findOneAndUpdate</span>(
+    { user_id: <span class="var">req</span>.<span class="prop">user</span>.<span class="prop">userId</span> },
+    { <span class="op">$set</span>: { tax_result: <span class="var">ruleResult</span> } }
+  )
+
+  <span class="var">res</span>.<span class="fn">json</span>({ suggestion })
+  <span class="cm">// React navigates to /suggestions to show the result card</span>
+}</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PHASE 7 — DASHBOARD
+═══════════════════════════════════════════ -->
+<div id="p7" style="margin-top:40px">
+<div class="phase-hdr phase-7">
+  <span class="phase-num n7">PHASE 07</span>
+  <span class="phase-label">Dashboard — Personalized Tax Saving Hub</span>
+  <span class="phase-tag">DashboardPage.jsx · GET /api/dashboard/summary</span>
+</div>
+
+<div class="step">
+  <div class="step-hdr">
+    <span class="step-n">7.1</span>
+    <div class="step-info">
+      <div class="step-title">Dashboard API — Single Endpoint Returns Everything</div>
+      <div class="step-desc">One GET call loads the entire dashboard. Aggregates: profile, latest tax result, latest suggestion, document statuses, and pending alerts. React renders from this single response.</div>
+    </div>
+  </div>
+  <div class="step-body">
+    <div class="g2">
+      <div class="code">
+        <div class="code-bar"><span class="code-lang">js</span><span class="code-file">controllers/dashboardController.js</span></div>
+        <div class="code-body"><span class="kw">const</span> <span class="fn">getDashboard</span> = <span class="kw">async</span> (<span class="var">req</span>, <span class="var">res</span>) => {
+  <span class="kw">const</span> <span class="var">uid</span> = <span class="var">req</span>.<span class="prop">user</span>.<span class="prop">userId</span>
+  <span class="kw">const</span> <span class="var">fy</span>  = <span class="str">'2024-25'</span>
+
+  <span class="cm">// Parallel fetch — all at once for speed</span>
+  <span class="kw">const</span> [<span class="var">profile</span>, <span class="var">suggestion</span>, <span class="var">docs</span>, <span class="var">alerts</span>] = <span class="kw">await</span> <span class="cls">Promise</span>.<span class="fn">all</span>([
+
+    <span class="cls">UserProfile</span>.<span class="fn">findOne</span>({ user_id: <span class="var">uid</span>, financial_year: <span class="var">fy</span> }),
+
+    <span class="cls">MLSuggestion</span>.<span class="fn">findOne</span>(
+      { user_id: <span class="var">uid</span>, financial_year: <span class="var">fy</span> },
+      {}, { sort: { created_at: -<span class="num">1</span> } } <span class="cm">// latest</span>
+    ),
+
+    <span class="cls">Document</span>.<span class="fn">find</span>(
+      { user_id: <span class="var">uid</span>, financial_year: <span class="var">fy</span> }
+    ).<span class="fn">select</span>(<span class="str">'section_tag status amount_match'</span>),
+
+    <span class="cls">Alert</span>.<span class="fn">find</span>(
+      { user_id: <span class="var">uid</span>, is_read: <span class="num">false</span> }
+    ).<span class="fn">sort</span>({ deadline: <span class="num">1</span> }).<span class="fn">limit</span>(<span class="num">5</span>),
+  ])
+
+  <span class="var">res</span>.<span class="fn">json</span>({
+    user: <span class="var">req</span>.<span class="prop">user</span>,
+    tax_result:     <span class="var">profile</span>?.<span class="prop">tax_result</span>,
+    suggestion:     <span class="var">suggestion</span>?.<span class="prop">suggestion</span>,
+    docs_status: {
+      total:     <span class="var">docs</span>.<span class="prop">length</span>,
+      submitted: <span class="var">docs</span>.<span class="fn">filter</span>(<span class="var">d</span> => <span class="var">d</span>.<span class="prop">status</span>===<span class="str">'submitted'</span>).<span class="prop">length</span>,
+      missing:   <span class="fn">getMissingDocs</span>(<span class="var">profile</span>, <span class="var">docs</span>),
+    },
+    alerts,
+    salary_uploaded: !!(profile?.salary?.gross_annual),
+  })
+}</div>
+      </div>
+      <div>
+        <div class="ic" style="margin-bottom:8px">
+          <div class="ic-title">What React renders from this response</div>
+          <ul class="bl">
+            <li><b>Tax Summary Card</b> — Current tax, potential saving, recommended regime</li>
+            <li><b>80C Progress Bar</b> — ₹X of ₹1.5L used (gap_80c from tax_result)</li>
+            <li><b>Top 3 Action Items</b> — from ML suggestion.action_items</li>
+            <li><b>Document Checklist</b> — submitted/missing per section</li>
+            <li><b>Alert Cards</b> — deadline countdowns</li>
+            <li><b>Quick Actions</b> — Upload Slip, Generate HR Report, Calculate</li>
+          </ul>
+        </div>
+        <div class="hl hl-blue"><b>When user clicks "Upload Salary Receipt":</b> React checks <code class="ic">salary_uploaded</code> from dashboard response. If false → go to /salary-upload. If profile_complete is false → ProtectedRoute catches first and redirects to /profile-setup.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     PHASES 8–12 SUMMARY
+═══════════════════════════════════════════ -->
+<div id="p8" style="margin-top:40px">
+<div class="phase-hdr phase-8">
+  <span class="phase-num n8">PHASES 08–12</span>
+  <span class="phase-label">Documents → HR Report → Alerts → Life Events → Next Year ML</span>
+</div>
+
+<div class="step">
+  <div class="step-hdr">
+    <span class="step-n">8–9</span>
+    <div class="step-info">
+      <div class="step-title">Documents Upload + HR PDF Report</div>
+    </div>
+  </div>
+  <div class="step-body">
+    <div class="g2">
+      <div>
+        <div class="ic-title" style="font-family:var(--mono);font-size:9px;color:var(--txt3);letter-spacing:.1em;margin-bottom:8px">DOCUMENT UPLOAD FLOW</div>
+        <div class="flow">
+          <div class="flow-row"><span class="flow-arrow">1</span><span>React Dropzone → user picks file + selects section tag (80C/80D/HRA…)</span></div>
+          <div class="flow-row"><span class="flow-arrow">2</span><span><code class="ic">POST /api/documents/upload</code> → Multer (memoryStorage) handles file</span></div>
+          <div class="flow-row"><span class="flow-arrow">3</span><span>Upload to S3: <code class="ic">userId/2024-25/section/timestamp_filename</code></span></div>
+          <div class="flow-row"><span class="flow-arrow">4</span><span>OCR extracts amount from document → compare to declared amount</span></div>
+          <div class="flow-row"><span class="flow-arrow">5</span><span>If match → status=submitted | If off >10% → status=pending + warning</span></div>
+          <div class="flow-row"><span class="flow-arrow">6</span><span><code class="ic">Document.create({'{'}user_id, section_tag, s3_key, status{'}'}) </code>→ MongoDB</span></div>
+          <div class="flow-row"><span class="flow-arrow">7</span><span>Dashboard doc_status updates via Redux dispatch</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="ic-title" style="font-family:var(--mono);font-size:9px;color:var(--txt3);letter-spacing:.1em;margin-bottom:8px">HR PDF REPORT FLOW</div>
+        <div class="flow">
+          <div class="flow-row"><span class="flow-arrow">1</span><span>User clicks "Generate HR Report" → <code class="ic">POST /api/reports/generate-hr</code></span></div>
+          <div class="flow-row"><span class="flow-arrow">2</span><span>Backend fetches: user profile + tax_result + all documents list</span></div>
+          <div class="flow-row"><span class="flow-arrow">3</span><span>PDFKit builds PDF in memory (Node.js streams, not filesystem)</span></div>
+          <div class="flow-row"><span class="flow-arrow">4</span><span>PDF buffer uploaded to S3: <code class="ic">userId/reports/hr_2024-25.pdf</code></span></div>
+          <div class="flow-row"><span class="flow-arrow">5</span><span><code class="ic">HRReport.create({'{'}user_id, s3_key, created_at{'}'})</code> → MongoDB</span></div>
+          <div class="flow-row"><span class="flow-arrow">6</span><span>Return pre-signed S3 URL (1 hour expiry) → React triggers browser download</span></div>
+          <div class="flow-row"><span class="flow-arrow">7</span><span>User downloads and emails to HR. HR updates TDS. Salary increases next month.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="p10" class="step">
+  <div class="step-hdr">
+    <span class="step-n">10–11</span>
+    <div class="step-info"><div class="step-title">Alerts System + Life Events Engine</div></div>
+  </div>
+  <div class="step-body">
+    <div class="g2">
+      <div>
+        <div class="ic" style="margin-bottom:8px">
+          <div class="ic-title">Alerts — MongoDB alerts collection</div>
+          <ul class="bl">
+            <li>Created when profile is saved or updated</li>
+            <li>Types: deadline_80c, hr_submission, insurance_renewal, nps_gap, itr_deadline</li>
+            <li>Each has: user_id, type, message, deadline_date, is_read (default false)</li>
+            <li>Dashboard API fetches top 5 unread sorted by deadline_date</li>
+            <li>Nodemailer (email) + Twilio (SMS) send reminders at 60/30/15/7 day marks</li>
+            <li>A cron job (node-cron) runs daily at 9am, checks all alerts, sends due ones</li>
+          </ul>
+        </div>
+        <div class="ic">
+          <div class="ic-title">Cron job setup</div>
+          <div class="ic-body"><code class="ic">cron.schedule('0 9 * * *', checkAndSendAlerts)</code><br>Runs at 9:00 AM IST every day. Fetches all unread alerts where deadline is within 60 days. Sends email/SMS. Never sends same alert twice — has sent_at field.</div>
+        </div>
+      </div>
+      <div>
+        <div class="ic">
+          <div class="ic-title">Life Events — trigger recalculate</div>
+          <ul class="bl">
+            <li>User logs event on /life-events page → PATCH /api/profile/life-events</li>
+            <li>Backend updates life_events sub-document in user_profiles</li>
+            <li>Immediately calls runTaxEngine again with new flags</li>
+            <li>parent_senior=true → 80D limit jumps from 25K to 75K</li>
+            <li>has_girl_child=true → SSY appears as top 80C instrument</li>
+            <li>has_home_loan=true → Section 24 deduction unlocked</li>
+            <li>salary_hiked=true → rerun ML with new salary, show regime change risk</li>
+            <li>New tax_result saved to MongoDB → dashboard refreshes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="p12" class="step">
+  <div class="step-hdr">
+    <span class="step-n">12</span>
+    <div class="step-info"><div class="step-title">Next Year ML Prediction — April Planning</div></div>
+  </div>
+  <div class="step-body">
+    <div class="flow">
+      <div class="flow-row"><span class="flow-arrow">1</span><span>Triggered April 1 each year OR when user clicks "Plan Next Year" on dashboard</span></div>
+      <div class="flow-row"><span class="flow-arrow">2</span><span>Fetch current year final salary, all investments, life events, feedback given</span></div>
+      <div class="flow-row"><span class="flow-arrow">3</span><span>Calculate salary growth rate: (this year − last year) / last year × 100</span></div>
+      <div class="flow-row"><span class="flow-arrow">4</span><span>Estimated next year salary = current × (1 + growth_rate)</span></div>
+      <div class="flow-row"><span class="flow-arrow">5</span><span>Run tax engine with estimated salary → find new gaps</span></div>
+      <div class="flow-row"><span class="flow-arrow">6</span><span>Send to Flask ML → get suggested instruments for next year profile</span></div>
+      <div class="flow-row"><span class="flow-arrow">7</span><span>Generate month-by-month SIP plan: gap_80c / 12 = monthly ELSS/PPF amount</span></div>
+      <div class="flow-row"><span class="flow-arrow">8</span><span>Show: "Start ₹5,833/month ELSS from April → hit 80C by December (not March rush)"</span></div>
+      <div class="flow-row"><span class="flow-arrow">9</span><span>Store in next_year_plan collection → shown on dashboard as "April Planning Card"</span></div>
+      <div class="flow-row"><span class="flow-arrow">10</span><span>User feedback on suggestions → stored in feedback collection → used in quarterly ML retrain</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- FINAL SUMMARY TABLE -->
+<div style="margin-top:40px">
+<div class="phase-hdr" style="background:rgba(212,168,71,0.04);border:1px solid rgba(212,168,71,0.2)">
+  <span class="phase-num" style="background:rgba(212,168,71,0.12);color:var(--gold)">SUMMARY</span>
+  <span class="phase-label">Complete MongoDB Collections Reference</span>
+</div>
+<div class="step">
+  <div class="step-body">
+    <table class="tbl">
+      <thead><tr><th>Collection</th><th>Created When</th><th>Key Fields</th><th>Queried By</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill pg">users</span></td><td>POST /auth/register</td><td>email, password_hash, is_verified, profile_complete, refresh_token</td><td>login, auth middleware, splash check</td></tr>
+        <tr><td><span class="pill pb">otps</span></td><td>After register</td><td>phone, otp_code, expires_at (TTL index → auto-delete at 10 min)</td><td>POST /auth/verify-otp</td></tr>
+        <tr><td><span class="pill pp">user_profiles</span></td><td>POST /profile/create (onboarding step 4)</td><td>user_id, salary{}, deductions{}, life_events{}, tax_result{}</td><td>Every feature — dashboard, rule engine, ML, documents</td></tr>
+        <tr><td><span class="pill pa">ml_suggestions</span></td><td>POST /suggestions/calculate</td><td>user_id, financial_year, suggestion{action_items, gaps, regime}, created_at</td><td>Dashboard, suggestions page, feedback, next year plan</td></tr>
+        <tr><td><span class="pill pt">documents</span></td><td>POST /documents/upload</td><td>user_id, section_tag, s3_key, declared_amount, ocr_extracted, status</td><td>Documents page, HR report generator, dashboard status</td></tr>
+        <tr><td><span class="pill pr">hr_reports</span></td><td>POST /reports/generate-hr</td><td>user_id, financial_year, s3_key, created_at</td><td>HR Report page, download endpoint</td></tr>
+        <tr><td><span class="pill pgold">alerts</span></td><td>On profile save, on dates approaching</td><td>user_id, type, message, deadline_date, is_read, sent_at</td><td>Dashboard top bar, cron job, alerts page</td></tr>
+        <tr><td><span class="pill pg">feedback</span></td><td>User marks suggestion helpful/not</td><td>user_id, suggestion_id, helpful (bool), created_at</td><td>ML quarterly retrain script</td></tr>
+        <tr><td><span class="pill pb">next_year_plans</span></td><td>April 1 or user-triggered</td><td>user_id, financial_year, estimated_salary, monthly_sip, action_items</td><td>Dashboard April planning card</td></tr>
+      </tbody>
+    </table>
+    <div class="hl hl-gold" style="margin-top:12px"><b>Build order — follow this strictly:</b> Phase 0 folder setup → Phase 2 auth (users schema + register/login) → Phase 3 profile (user_profiles schema + 4-step wizard) → Phase 1 splash (needs auth to work) → Phase 4 salary OCR → Phase 5 rule engine (pure functions, write unit tests) → Phase 6 ML dataset + training + Flask server → Phase 6.2 suggestions endpoint (calls both rule engine + Flask) → Phase 7 dashboard → Phase 8 documents → Phase 9 HR report → Phase 10 alerts + cron → Phase 11 life events → Phase 12 next year plan → Deploy.</div>
+  </div>
+</div>
+</div>
+
+<div style="text-align:center;padding:32px 0 0;font-family:var(--mono);font-size:10px;color:var(--txt3);letter-spacing:.08em">
+  TAXWISE VAULT · COMPLETE TECHNICAL CODING WORKFLOW 
+  </div>
+  </div>
+  </body>
+  </html>

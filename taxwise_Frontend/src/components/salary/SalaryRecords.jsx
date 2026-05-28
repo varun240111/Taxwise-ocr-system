@@ -33,9 +33,9 @@ export default function SalaryRecords({ onActiveChanged }) {
       setUpdatingId(id);
       await api.patch(`/salary/${id}/mark-active`);
       await fetchRecords();
-      onActiveChanged?.();
+      onActiveChanged?.(id);
     } catch (error) {
-      alert(error.response?.data?.message || "Failed to mark active");
+      console.log("Mark active failed:", error);
     } finally {
       setUpdatingId(null);
     }

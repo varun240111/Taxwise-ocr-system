@@ -63,7 +63,10 @@ const taxCalculationSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-
+    mlSuggestionId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "MLSuggestion",
+    },
     betterRegime: {
       type: String,
       enum: ["old", "new", "same"],
