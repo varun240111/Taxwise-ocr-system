@@ -56,7 +56,29 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: null,
     },
-    
+    profileImageUrl: {
+      type: String,
+      default: "",
+    },
+
+    profileImageKey: {
+      type: String,
+      default: "",
+    },
+    notifications: {
+  taxReminder: {
+    type: Boolean,
+    default: true,
+  },
+  proofReminder: {
+    type: Boolean,
+    default: true,
+  },
+  hrReminder: {
+    type: Boolean,
+    default: true,
+  },
+},
   },
   { timestamps: true }
 );

@@ -5,6 +5,9 @@ import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import sendEmail from "../utils/sendEmail.js";
 import PendingUser from "../models/PendingUser.js";
+import getS3Client from "../utils/s3Client.js";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
+
 
 // ================= ACCESS TOKEN =================
 const generateAccessToken = (userId) => {
@@ -14,7 +17,7 @@ const generateAccessToken = (userId) => {
     {
       expiresIn:
         process.env.ACCESS_TOKEN_EXPIRE || "15m",
-    }
+    } 
   );
 };
 
@@ -58,7 +61,82 @@ const generateOtp = () => {
   ).toString();
 };
 
+export const updateAccountProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
 
+    const { name, phone } = req.body;
+
+    if (name !== undefined) user.name = name;
+    if (phone !== undefined) user.phone = phone;
+
+    if (req.file) {
+      const s3 = getS3Client();
+
+      const fileKey = `profile-images/${req.user.id}/${Date.now()}-${req.file.originalname}`;
+
+      await s3.send(
+      new PutObjectCommand({
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: fileKey,
+        Body: req.file.buffer,
+        ContentType: req.file.mimetype,
+      })
+    );
+
+      user.profileImageUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
+      user.profileImageKey = fileKey;
+    }
+
+    await user.save();
+
+    res.json({
+      success: true,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        profileImageUrl: user.profileImageUrl,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Profile update failed",
+    });
+  }
+};
+export const updateNotifications = async (req, res) => {
+  try {
+    const { notifications } = req.body;
+
+    const user = await User.findByIdAndUpdate(
+      req.user.id,
+      { notifications },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Notifications updated successfully",
+      notifications: user.notifications,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        profileImageUrl: user.profileImageUrl,
+        notifications: user.notifications,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update notifications",
+    });
+  }
+};
 
 // ================= REGISTER USER =================
 export const registerUser = async (req, res) => {
@@ -202,6 +280,7 @@ export const verifyOtp = async (req, res) => {
         name: user.name,
         email: user.email,
         phone: user.phone,
+        profileImageUrl: user.profileImageUrl,
       },
     });
   } catch (error) {
@@ -306,6 +385,7 @@ export const loginUser = async (
         name: user.name,
         email: user.email,
         phone: user.phone,
+        profileImageUrl: user.profileImageUrl,
       },
     });
 
@@ -353,12 +433,45 @@ export const refreshAccessToken = async (req, res) => {
         name: user.name,
         email: user.email,
         phone: user.phone,
+        profileImageUrl: user.profileImageUrl,
       },
     });
   } catch (error) {
     return res.status(403).json({
       success: false,
       message: "Refresh token expired or invalid",
+    });
+  }
+};
+export const changePassword = async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    const user = await User.findById(req.user.id);
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Current password is incorrect",
+      });
+    }
+
+    user.password = await bcrypt.hash(newPassword, 10);
+
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Password updated successfully",
+    });
+  } catch (error) {
+    console.log("CHANGE PASSWORD ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Password update failed",
     });
   }
 };

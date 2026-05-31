@@ -8,8 +8,10 @@ import SalaryUpload from "../salary/SalaryUpload.jsx";
 import ProfileSetup from "../profile/ProfileSetup.jsx";
 import SalaryRecords from "../salary/SalaryRecords.jsx";
 import TaxCalculator from "../tax/TaxCalculator.jsx";
-
+import SettingsPage from "../settings/Settings.jsx";
 import Mydocuments from "../documents/Mydocuments.jsx"
+import { CircleHelp } from "lucide-react";
+
 
 import {
   Calculator,
@@ -36,7 +38,17 @@ export default function Dashboard() {
 
   const [salaryUploaded, setSalaryUploaded] = useState(false);
   const [checkingSalary, setCheckingSalary] = useState(true);
+  useEffect(() => {
+    const handleMenuNavigation = (event) => {
+      setActivePage(event.detail);
+    };
 
+    window.addEventListener("taxwise:navigate", handleMenuNavigation);
+
+    return () => {
+      window.removeEventListener("taxwise:navigate", handleMenuNavigation);
+    };
+  }, []);
   useEffect(() => {
     const checkProfile = async () => {
       try {
@@ -105,10 +117,14 @@ export default function Dashboard() {
         />
       );
     }
+
     if (activePage === "documents") {
         return <Mydocuments />;
       }
 
+    if(activePage === "settings") {
+      return <SettingsPage />;
+    }
     if (activePage === "profile") {
       return (
         <ProfileSetup
@@ -148,6 +164,18 @@ export default function Dashboard() {
 
       return <HRReport />;
     }
+    if (activePage === "support") {
+    return (
+      <PageBox
+        icon={CircleHelp}
+        title="Help & Support"
+        tag="Support"
+        text="Contact support, read FAQs, and get help with TaxWise Vault."
+        button="Back to settings"
+        onClick={() => setActivePage("settings")}
+      />
+    );
+  }
    if (activePage === "calculator") {
       if (checkingSalary) {
         return (
