@@ -239,7 +239,7 @@ function MenuItem({ icon, title, subtitle, onClick, danger = false }) {
         >
           {title}
         </p>
-        <p className="mt-1 text-xs text-[#7f8b85]">{subtitle}</p>
+        <p className="m t-1 text-xs text-[#7f8b85]">{subtitle}</p>
       </div>
     </button>
   );

@@ -16,6 +16,10 @@ import {
   BarChart3,
 } from "lucide-react";
 
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../../store/authSlice.js";
+
 const sections = [
   {
     title: "Main",
@@ -61,6 +65,15 @@ export default function Sidebar({
       .join("")
       .slice(0, 2)
       .toUpperCase() || "TV";
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+  dispatch(logout());
+  navigate("/login");
+};
+
 
   const handlePageChange = (page) => {
     setActivePage(page);
@@ -272,6 +285,7 @@ export default function Sidebar({
             </div>
 
             <button
+              onClick={handleLogout}
               type="button"
               className={`flex w-full cursor-pointer items-center rounded-[10px] px-3 py-[9px] text-[13px] font-semibold text-[#9da89d] transition hover:bg-red-500/10 hover:text-[#e05252] ${
                 collapsed ? "justify-center" : "gap-2.5"

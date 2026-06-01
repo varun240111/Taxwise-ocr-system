@@ -13,6 +13,8 @@ import suggestionRoutes from "./routes/suggestionRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 import documentRoutes from "./routes/documentRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
+import supportRoutes from "./routes/supportRoutes.js";
+
 
 connectDB();
 
@@ -40,6 +42,7 @@ app.use("/api/suggestions", suggestionRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/documents", documentRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/support", supportRoutes);
 
 
 const PORT = process.env.PORT || 5000;

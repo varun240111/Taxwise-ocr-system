@@ -11,7 +11,7 @@ import TaxCalculator from "../tax/TaxCalculator.jsx";
 import SettingsPage from "../settings/Settings.jsx";
 import Mydocuments from "../documents/Mydocuments.jsx"
 import { CircleHelp } from "lucide-react";
-
+import HelpSupport from "../support/HelpSupport.jsx";
 
 import {
   Calculator,
@@ -124,6 +124,9 @@ export default function Dashboard() {
 
     if(activePage === "settings") {
       return <SettingsPage />;
+    }
+    if (activePage === "support") {
+      return <HelpSupport setActivePage={setActivePage} />;
     }
     if (activePage === "profile") {
       return (
