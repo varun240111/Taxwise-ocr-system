@@ -75,3 +75,43 @@ export const getMySupportTickets = async (req, res) => {
     });
   }
 };
+
+export const getAllSupportTickets = async (req, res) => {
+  try {
+    const tickets = await SupportTicket.find()
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      tickets,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch all tickets",
+    });
+  }
+};
+
+export const updateTicketStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    const ticket = await SupportTicket.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Ticket status updated",
+      ticket,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to update ticket status",
+    });
+  }
+};

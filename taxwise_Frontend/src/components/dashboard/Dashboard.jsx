@@ -12,6 +12,7 @@ import SettingsPage from "../settings/Settings.jsx";
 import Mydocuments from "../documents/Mydocuments.jsx"
 import { CircleHelp } from "lucide-react";
 import HelpSupport from "../support/HelpSupport.jsx";
+import AdminSupportPanel from "../support/AdminSupportPanel.jsx";
 
 import {
   Calculator,
@@ -148,7 +149,10 @@ export default function Dashboard() {
         />
       );
     }
-
+    
+    if (activePage === "admin-support") {
+      return <AdminSupportPanel />;
+    }
     
     if (activePage === "hr") {
       if (!salaryUploaded) {

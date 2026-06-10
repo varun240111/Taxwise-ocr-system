@@ -5,6 +5,7 @@ import {
   Settings,
   CircleHelp,
   LogOut,
+  ShieldCheck,
 } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect, useRef } from "react";
@@ -186,6 +187,20 @@ export default function TopNavbar({ title, subtitle }) {
                     );
                   }}
                 />
+
+                <MenuItem
+                    icon={<ShieldCheck size={16} />}
+                    title="Admin Support"
+                    subtitle="Manage user tickets"
+                    onClick={() => {
+                      setOpenMenu(false);
+                      window.dispatchEvent(
+                        new CustomEvent("taxwise:navigate", {
+                          detail: "admin-support",
+                        })
+                      );
+                    }}
+                  />
 
                 <div className="my-2 border-t border-[#27332f]" />
 
