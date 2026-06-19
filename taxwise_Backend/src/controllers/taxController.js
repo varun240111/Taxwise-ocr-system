@@ -261,7 +261,7 @@ export const calculateTax = async (req, res) => {
       };
 
       const mlResponse = await axios.post(
-        "http://127.0.0.1:5001/predict-tax-plan",
+        `${ML_SERVICE_URL}`,
         mlPayload
       );
 
