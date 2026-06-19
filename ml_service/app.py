@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+import os
 
 import pandas as pd
 import joblib
@@ -116,9 +117,10 @@ def predict_tax_plan():
 
 
 if __name__ == "__main__":
-
     app.run(
         host="0.0.0.0",
-        port=5001,
-        debug=True,
+        port=int(os.environ.get("PORT", 5001)),
+        debug=False
     )
+
+    
