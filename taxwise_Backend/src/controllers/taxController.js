@@ -260,6 +260,10 @@ export const calculateTax = async (req, res) => {
         gap_NPS: gapNPS,
       };
 
+      const ML_SERVICE_URL =
+      process.env.ML_SERVICE_URL ||
+      "http://localhost:5001/predict-tax-plan";
+      
       const mlResponse = await axios.post(
         `${ML_SERVICE_URL}`,
         mlPayload
