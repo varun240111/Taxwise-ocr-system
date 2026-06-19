@@ -1,7 +1,9 @@
 {
   "name": "taxwise_backend",
   "version": "1.0.0",
-  "engines": "20.x",
+  "engines":{
+    "node":"20.x"
+  },
   "description": "",
   "main": "index.js",
   "type": "module",
